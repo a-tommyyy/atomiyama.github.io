@@ -1,0 +1,12 @@
+.experience {
+  padding-left: 1.6rem;
+  margin-bottom: 0.8rem;
+}
+
+.title {
+  color: var(--cyan);
+}
+
+.description {
+  padding-left: 1.6rem;
+}

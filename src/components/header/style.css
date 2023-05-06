@@ -1,0 +1,22 @@
+header {
+  height: 10rem;
+  padding: 1.6rem;
+}
+
+header ul {
+  list-style: none;
+  padding: 0;
+}
+
+header nav li {
+  display: inline-block;
+  margin-right: 1.6rem;
+}
+
+.title {
+  color: var(--cyan);
+}
+
+.subtitle {
+  color: var(--yellow);
+}

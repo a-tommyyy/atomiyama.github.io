@@ -1,0 +1,45 @@
+.home {
+  height: 100%;
+  overflow: scroll;
+}
+
+hr {
+  border: 1px solid var(--base01);
+}
+
+.activeprompt{
+  display: flex;
+}
+
+.prompt {
+  color: var(--yellow);
+}
+
+.command {
+  background-color: var(--base02);
+  border: none;
+  color: var(--base0);
+  font-family: "Hack", monospace;
+  font-size: 14px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.command:focus {
+	outline: none;
+}
+
+.output {
+  color: var(--base0);
+  white-space: pre-wrap;
+  margin-bottom: 1.5rem;
+}
+
+.error {
+  color: var(--red);
+  margin-bottom: 1.5rem;
+}
+
+p {
+  margin: 0;
+}

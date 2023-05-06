@@ -1,0 +1,34 @@
+.terminal {
+  color: var(--base0);
+}
+
+.welcome {
+  margin-bottom: 1.6rem;
+}
+
+.activeprompt{
+  display: flex;
+}
+
+.prompt {
+  color: var(--yellow);
+}
+
+.command {
+  background-color: var(--base02);
+  border: none;
+  color: var(--base0);
+  font-family: "Hack", monospace;
+  font-size: 14px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.command:focus {
+	outline: none;
+}
+
+.output {
+  white-space: pre-wrap;
+  margin: 1rem 1.6rem;
+}
