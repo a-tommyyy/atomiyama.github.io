@@ -9,15 +9,18 @@ export type CmdProps = {
   rawInput: string;
   command: string;
   args: string[];
+  hidden?: boolean;
 }
-export const Cmd = ({ command, args, rawInput }: CmdProps) => {
+export const Cmd = (props: CmdProps) => {
+  if (props.hidden) return null
+
   return (
 		<Fragment>
 			<p>
 				<span class={style.prompt}>{PROMPT}</span>
-				<span class={style.command}>{rawInput}</span>
+				<span class={style.command}>{props.rawInput}</span>
 			</p>
-			<CmdOutput command={command} args={args} rawInput={rawInput} />
+			<CmdOutput {...props} />
 		</Fragment>
   )
 }
