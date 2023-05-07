@@ -19,7 +19,6 @@ export const CommandHelp = () => {
 				<p class={style.title}>Special Commands :</p>
 				<ul>
 					<li>clear -- Clear all command histories</li>
-					<li>exit -- Close current browser tab</li>
 					<li>cd -- Change location(Not Implemented)</li>
 					<li>ls -- List locations and files(Not Implemented)</li>
 				</ul>
