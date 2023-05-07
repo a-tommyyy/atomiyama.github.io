@@ -8,6 +8,7 @@ export const PROMPT = "guest@atomiyama.dev:~$"
 export const Terminal = () => {
 	const {
 		formRef,
+		inputRef,
 		commandProps,
 		handleExecCmd,
 	} = useCmd()
@@ -22,12 +23,12 @@ export const Terminal = () => {
       {commandProps.map((props, i) => (
         <Fragment key={`history_${i}`}><Cmd {...props} /></Fragment>
       ))}
-      <Prompt handleExecCmd={handleExecCmd} formRef={formRef} />
+      <Prompt handleExecCmd={handleExecCmd} formRef={formRef} inputRef={inputRef} />
     </div>
   )
 }
 
-const Prompt = ({ handleExecCmd, formRef }) => {
+const Prompt = ({ handleExecCmd, formRef, inputRef }) => {
 	const handleSubmit = (e) => {
 		e.preventDefault()
 		const input = e.target.command.value;
@@ -39,7 +40,7 @@ const Prompt = ({ handleExecCmd, formRef }) => {
 	return (
 		<form ref={formRef} id="activeprompt" class={style.activeprompt} onSubmit={handleSubmit}>
 			<span class={style.prompt}>{PROMPT}</span>
-			<input type="text" name="command" class={style.command} autofocus autocomplete="off" />
+			<input ref={inputRef} type="text" name="command" class={style.command} autofocus autocomplete="off" />
 		</form>
 	)
 }

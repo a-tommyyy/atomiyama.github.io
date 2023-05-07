@@ -3,6 +3,7 @@ import { CmdProps } from ".";
 
 type UseCmd = {
   formRef: React.RefObject<HTMLFormElement>;
+  inputRef: React.RefObject<HTMLInputElement>;
   handleExecCmd: (input: string) => void;
   commandProps: CmdProps[];
 }
@@ -14,6 +15,19 @@ export const useCmd = (): UseCmd => {
 
   // To restore history when user presses up/down arrow keys
   const [results, setResults] = useState<CmdProps[]>([]);
+
+  // formにフォーカスがない状態でEnterが押されたらformのinputにフォーカスする
+  const inputRef = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Enter' && document.activeElement !== inputRef.current) {
+        e.preventDefault();
+        inputRef.current?.focus();
+      }
+    }
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [])
 
   const handleExecCmd = (input: string) => {
     console.log(input)
@@ -33,6 +47,7 @@ export const useCmd = (): UseCmd => {
 
   return {
     formRef,
+    inputRef,
     handleExecCmd,
     commandProps: results,
   }
