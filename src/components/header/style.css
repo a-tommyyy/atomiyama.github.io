@@ -1,6 +1,9 @@
 header {
-  height: 10rem;
   padding: 1.6rem;
+  padding-bottom: 0;
+  background-color: var(--base02);
+  position: sticky;
+  top: 0;
 }
 
 header ul {
@@ -19,4 +22,5 @@ header nav li {
 
 .subtitle {
   color: var(--yellow);
+  font-weight: bold;
 }

@@ -3,7 +3,7 @@ import style from './style.css'
 
 export const CommandExperience = () => {
   return (
-    <div>
+    <div class={style.output}>
       <strong>Professional Experience :</strong>
       <div class={style.experience}>
         <p class={style.title}>

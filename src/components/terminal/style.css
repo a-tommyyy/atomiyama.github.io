@@ -1,6 +1,9 @@
 .terminal {
   color: var(--base0);
 }
+.terminal p {
+  margin: 0;
+}
 
 .welcome {
   margin-bottom: 1.6rem;
@@ -26,9 +29,4 @@
 
 .command:focus {
 	outline: none;
-}
-
-.output {
-  white-space: pre-wrap;
-  margin: 1rem 1.6rem;
 }

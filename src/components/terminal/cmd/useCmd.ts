@@ -16,10 +16,11 @@ export const useCmd = (): UseCmd => {
   const [results, setResults] = useState<CmdProps[]>([]);
 
   const handleExecCmd = (input: string) => {
+    console.log(input)
     const command = input.split(' ')[0];
     const args = input.split(' ').slice(1);
     if (command === 'clear') {
-      return setHistory([])
+      return setResults([])
     }
 
     const result = {

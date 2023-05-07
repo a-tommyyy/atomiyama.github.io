@@ -2,7 +2,7 @@ import { Fragment, h } from 'preact';
 import style from '../style.css'
 import { PROMPT } from '../index';
 import { CommandHelp } from './help';
-import { CommandError } from './error';
+import { CommandNotFound } from './error';
 import { CommandExperience } from './experience';
 
 export type CmdProps = {
@@ -17,9 +17,7 @@ export const Cmd = ({ command, args, rawInput }: CmdProps) => {
 				<span class={style.prompt}>{PROMPT}</span>
 				<span class={style.command}>{rawInput}</span>
 			</p>
-      <div class={style.output}>
-			  <CmdOutput command={command} args={args} rawInput={rawInput} />
-      </div>
+			<CmdOutput command={command} args={args} rawInput={rawInput} />
 		</Fragment>
   )
 }
@@ -32,8 +30,11 @@ const CmdOutput = ({ command }: CmdProps) => {
     case 'experience': {
       return <CommandExperience />
     }
+    case '': {
+      return null
+    }
     default: {
-      return <CommandError command={command} />
+      return <CommandNotFound command={command} />
     }
   }
 }
