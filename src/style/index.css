@@ -1,12 +1,6 @@
 :root {
-	font-weight: 400;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
-
-	background-color: #073642;
-	font-family: "Hack", monospace;
-	font-size: 14px;
-	line-height: 1.5;
 
 	--base03:    #002b36;
 	--base02:    #073642;
@@ -24,6 +18,13 @@
 	--blue:      #268bd2;
 	--cyan:      #2aa198;
 	--green:     #859900;
+
+	background-color: var(--base02);
+  color: var(--base0);
+	font-family: "Hack", monospace;
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 1.5;
 }
 
 body {

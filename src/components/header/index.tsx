@@ -1,5 +1,6 @@
 import { h } from 'preact';
 import style from './style.css';
+import { Link } from 'preact-router';
 
 export const Header = () => (
 	<header>
@@ -7,6 +8,11 @@ export const Header = () => (
 		<p class={style.subtitle}>Software Engineer skilled in Web Application and Data Engineering.</p>
 		<nav>
 			<ul>
+				<li>
+					<Link class="fa-solid fa-terminal" href="/">
+						<span class={style.label}>Terminal</span>
+					</Link>
+				</li>
 				<li>
 					<a class="fa-brands fa-github" href="https://github.com/atomiyama">
 						<span class={style.label}>GitHub</span>
