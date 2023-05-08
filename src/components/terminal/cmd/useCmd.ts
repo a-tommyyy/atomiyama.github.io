@@ -18,6 +18,7 @@ export const useCmd = (): UseCmd => {
   const [historyIndex, setHistoryIndex] = useState<number>(0);
 
   const inputRef = useRef<HTMLInputElement>(null);
+  useEffect(() => inputRef.current.focus(), []);
   const inputValueMemo = useRef<string>('');
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
