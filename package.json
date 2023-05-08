@@ -1,10 +1,10 @@
 {
   "private": true,
-  "name": "preact-ts",
+  "name": "www.atomiyama.dev",
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "build": "cross-env NODE_OPTIONS=--openssl-legacy-provider preact build",
+    "build": "cross-env NODE_OPTIONS=--openssl-legacy-provider preact build --dest docs",
     "serve": "sirv build --cors --single",
     "dev": "cross-env NODE_OPTIONS=--openssl-legacy-provider preact watch",
     "lint": "eslint src",
@@ -17,7 +17,7 @@
       "plugin:@typescript-eslint/recommended"
     ],
     "ignorePatterns": [
-      "build/"
+      "docs/"
     ]
   },
   "dependencies": {

@@ -709,6 +709,9 @@ var useCmd_useCmd = function useCmd() {
     historyIndex = _useState4[0],
     setHistoryIndex = _useState4[1];
   var inputRef = _(null);
+  p(function () {
+    return inputRef.current.focus();
+  }, []);
   var inputValueMemo = _('');
   p(function () {
     var handleKeyDown = function handleKeyDown(e) {
