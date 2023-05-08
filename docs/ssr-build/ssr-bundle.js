@@ -431,12 +431,53 @@ preact_router_es_Router.Link = preact_router_es_Link;
 preact_router_es_Router.exec = exec;
 
 /* harmony default export */ var preact_router_es = (preact_router_es_Router);
-// CONCATENATED MODULE: ./routes/home/style.css
+// CONCATENATED MODULE: ./components/header/style.css
 // extracted by mini-css-extract-plugin
-/* harmony default export */ var style = ({"home":"home__uRcqa","activeprompt":"activeprompt__Y1ehr","prompt":"prompt__OSu4E","command":"command__yT2Am","output":"output__JItyU","error":"error__qfBhC"});
+/* harmony default export */ var style = ({"title":"title__I4umU","subtitle":"subtitle__0gF3H"});
+// CONCATENATED MODULE: ./components/header/index.tsx
+
+
+
+var header_Header = function Header() {
+  return Object(external_preact_["h"])("header", null, Object(external_preact_["h"])("h1", {
+    class: style.title
+  }, "Akifumi Akazawa(Tomiyama)"), Object(external_preact_["h"])("p", {
+    class: style.subtitle
+  }, "Software Engineer skilled in Web Application and Data Engineering."), Object(external_preact_["h"])("nav", null, Object(external_preact_["h"])("ul", null, Object(external_preact_["h"])("li", null, Object(external_preact_["h"])(preact_router_es_Link, {
+    class: "fa-solid fa-terminal",
+    href: "/"
+  }, Object(external_preact_["h"])("span", {
+    class: style.label
+  }, "Terminal"))), Object(external_preact_["h"])("li", null, Object(external_preact_["h"])("a", {
+    class: "fa-brands fa-github",
+    href: "https://github.com/atomiyama"
+  }, Object(external_preact_["h"])("span", {
+    class: style.label
+  }, "GitHub"))), Object(external_preact_["h"])("li", null, Object(external_preact_["h"])("a", {
+    class: "fa-brands fa-twitter",
+    href: "https://twitter.com/atomiyama1216"
+  }, Object(external_preact_["h"])("span", {
+    class: style.label
+  }, "Twitter"))), Object(external_preact_["h"])("li", null, Object(external_preact_["h"])("a", {
+    class: "fa-brands fa-linkedin",
+    href: "https://linkedin.com/in/atomiyama1216"
+  }, Object(external_preact_["h"])("span", {
+    class: style.label
+  }, "LinkedIn"))), Object(external_preact_["h"])("li", null, Object(external_preact_["h"])("a", {
+    class: "fa-brands fa-facebook",
+    href: "https://www.facebook.com/atomiyama1216"
+  }, Object(external_preact_["h"])("span", {
+    class: style.label
+  }, "Facebook"))), Object(external_preact_["h"])("li", null, Object(external_preact_["h"])("a", {
+    class: "fa-regular fa-envelope",
+    href: "mailto:tomisuker16@gmail.com"
+  }, Object(external_preact_["h"])("span", {
+    class: style.label
+  }, "Email"))))), Object(external_preact_["h"])("hr", null));
+};
 // CONCATENATED MODULE: ./components/terminal/style.css
 // extracted by mini-css-extract-plugin
-/* harmony default export */ var terminal_style = ({"terminal":"terminal__Ns8FN","welcome":"welcome__8TTjf","activeprompt":"activeprompt__-RKgw","prompt":"prompt__wX4A9","command":"command__JBFdT","output":"output__nSgGw"});
+/* harmony default export */ var terminal_style = ({"terminal":"terminal__Ns8FN","welcome":"welcome__8TTjf","activeprompt":"activeprompt__-RKgw","prompt":"prompt__wX4A9","command":"command__JBFdT"});
 // CONCATENATED MODULE: ../node_modules/preact/hooks/dist/hooks.module.js
 
 var hooks_module_t,
@@ -632,10 +673,16 @@ function B(n, t) {
 }
 
 // CONCATENATED MODULE: ./components/terminal/cmd/useCmd.ts
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
@@ -657,11 +704,70 @@ var useCmd_useCmd = function useCmd() {
     _useState2 = _slicedToArray(_useState, 2),
     results = _useState2[0],
     setResults = _useState2[1];
+  var _useState3 = h(0),
+    _useState4 = _slicedToArray(_useState3, 2),
+    historyIndex = _useState4[0],
+    setHistoryIndex = _useState4[1];
+  var inputRef = _(null);
+  var inputValueMemo = _('');
+  p(function () {
+    var handleKeyDown = function handleKeyDown(e) {
+      // formにフォーカスがない状態でEnterが押されたらformのinputにフォーカスする
+      if (e.key === 'Enter' && document.activeElement !== inputRef.current) {
+        var _inputRef$current;
+        e.preventDefault();
+        (_inputRef$current = inputRef.current) === null || _inputRef$current === void 0 ? void 0 : _inputRef$current.focus();
+      }
+
+      // historyIndexが最大値のときその時点でのinputの値をinputValueMemoに保存する
+      if (historyIndex === results.length) {
+        var _inputRef$current2;
+        inputValueMemo.current = ((_inputRef$current2 = inputRef.current) === null || _inputRef$current2 === void 0 ? void 0 : _inputRef$current2.value) || '';
+      }
+      // 上下矢印キーで履歴を遡れるようにする
+      if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        var prev = results[historyIndex - 1];
+        if (prev && inputRef.current) {
+          inputRef.current.value = prev.rawInput;
+          setHistoryIndex(function (current) {
+            return current - 1;
+          });
+        }
+      }
+      // 下矢印キーで履歴を進められるようにする
+      // ただし、最新の履歴まで進んだ場合は、もとの入力を復元する
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        var next = results[historyIndex + 1];
+        if (next && inputRef.current) {
+          inputRef.current.value = next.rawInput;
+          setHistoryIndex(function (current) {
+            return current + 1;
+          });
+        } else {
+          inputRef.current.value = inputValueMemo.current;
+          setHistoryIndex(results.length);
+        }
+      }
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return function () {
+      return document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [results, historyIndex]);
   var handleExecCmd = function handleExecCmd(input) {
+    console.log(input);
     var command = input.split(' ')[0];
     var args = input.split(' ').slice(1);
     if (command === 'clear') {
-      return setResults([]);
+      return setResults(function (results) {
+        return results.map(function (result) {
+          return _objectSpread(_objectSpread({}, result), {}, {
+            hidden: true
+          });
+        });
+      });
     }
     var result = {
       rawInput: input,
@@ -671,64 +777,75 @@ var useCmd_useCmd = function useCmd() {
     setResults(function (results) {
       return [].concat(_toConsumableArray(results), [result]);
     });
+    setHistoryIndex(function (current) {
+      return current + 1;
+    });
   };
   return {
     formRef: formRef,
+    inputRef: inputRef,
     handleExecCmd: handleExecCmd,
     commandProps: results
   };
 };
+// CONCATENATED MODULE: ./components/terminal/cmd/style.css
+// extracted by mini-css-extract-plugin
+/* harmony default export */ var cmd_style = ({"output":"output__Y6snD","error":"error__HYsFw","experience":"experience__mujx-","title":"title__UtO8N","description":"description__DD9lX"});
 // CONCATENATED MODULE: ./components/terminal/cmd/help.tsx
 
 
 var help_CommandHelp = function CommandHelp() {
   return Object(external_preact_["h"])("div", {
-    class: terminal_style.output
-  }, Object(external_preact_["h"])("p", null, "NAME"), Object(external_preact_["h"])("p", null, "  help - show the list of available commands"), Object(external_preact_["h"])("p", null, "SYNOPSIS"), Object(external_preact_["h"])("p", null, "  help"), Object(external_preact_["h"])("p", null, "DESCRIPTION"), Object(external_preact_["h"])("p", null, "  Show the list of available commands."));
+    class: cmd_style.output
+  }, Object(external_preact_["h"])("div", {
+    class: cmd_style.section
+  }, Object(external_preact_["h"])("p", {
+    class: cmd_style.title
+  }, "Available Commands :"), Object(external_preact_["h"])("ul", null, Object(external_preact_["h"])("li", null, "help -- List of available commands"), Object(external_preact_["h"])("li", null, "experience -- List of professional experiences"), Object(external_preact_["h"])("li", null, "skills -- List of skills(Not Implemented)"), Object(external_preact_["h"])("li", null, "education -- List of education(Not Implemented)"), Object(external_preact_["h"])("li", null, "contact -- List of contact information(Not Implemented)"), Object(external_preact_["h"])("li", null, "activity -- List of activities and interests(Not Implemented)"))), Object(external_preact_["h"])("div", {
+    class: cmd_style.section
+  }, Object(external_preact_["h"])("p", {
+    class: cmd_style.title
+  }, "Special Commands :"), Object(external_preact_["h"])("ul", null, Object(external_preact_["h"])("li", null, "clear -- Clear all command histories"), Object(external_preact_["h"])("li", null, "cd -- Change location(Not Implemented)"), Object(external_preact_["h"])("li", null, "ls -- List locations and files(Not Implemented)"))));
 };
-// CONCATENATED MODULE: ./components/terminal/cmd/error/style.css
-// extracted by mini-css-extract-plugin
-/* harmony default export */ var error_style = ({"error":"error__BiDa2"});
-// CONCATENATED MODULE: ./components/terminal/cmd/error/index.tsx
+// CONCATENATED MODULE: ./components/terminal/cmd/error.tsx
 
 
-var error_CommandError = function CommandError(_ref) {
+var error_CommandNotFound = function CommandNotFound(_ref) {
   var command = _ref.command;
-  return Object(external_preact_["h"])("div", null, Object(external_preact_["h"])("p", {
-    class: error_style.error
-  }, "command not found: ", command));
+  return Object(external_preact_["h"])("div", {
+    class: cmd_style.error
+  }, Object(external_preact_["h"])("p", null, "command not found: ", command));
 };
-// CONCATENATED MODULE: ./components/terminal/cmd/experience/style.css
-// extracted by mini-css-extract-plugin
-/* harmony default export */ var experience_style = ({"experience":"experience__3u+lq","title":"title__BJfmc","description":"description__zEN7V"});
-// CONCATENATED MODULE: ./components/terminal/cmd/experience/index.tsx
+// CONCATENATED MODULE: ./components/terminal/cmd/experience.tsx
 
 
 var experience_CommandExperience = function CommandExperience() {
-  return Object(external_preact_["h"])("div", null, Object(external_preact_["h"])("strong", null, "Professional Experience :"), Object(external_preact_["h"])("div", {
-    class: experience_style.experience
+  return Object(external_preact_["h"])("div", {
+    class: cmd_style.output
+  }, Object(external_preact_["h"])("strong", null, "Professional Experience :"), Object(external_preact_["h"])("div", {
+    class: cmd_style.experience
   }, Object(external_preact_["h"])("p", {
-    class: experience_style.title
+    class: cmd_style.title
   }, Object(external_preact_["h"])("strong", null, "1) Customer Reliability Engineer"), ", Studyplus,Inc. Tokyo,Japan (2022/05 ~ Now)"), Object(external_preact_["h"])("p", {
-    class: experience_style.description
+    class: cmd_style.description
   }, "A first member of the team. Decrease Customer's anxiety and increase Customer's satisfaction by improving the reliability of the service."), Object(external_preact_["h"])("ul", null, Object(external_preact_["h"])("li", null, "Building Data Pipeline and Data Warehouse(~500 tables, 1billion records)"), Object(external_preact_["h"])("li", null, "Implement system to detect messages between users that violate the terms of service.(1M messages/month)"))), Object(external_preact_["h"])("div", {
-    class: experience_style.experience
+    class: cmd_style.experience
   }, Object(external_preact_["h"])("p", {
-    class: experience_style.title
+    class: cmd_style.title
   }, Object(external_preact_["h"])("strong", null, "2) Team Leader"), ", Studyplus,Inc. Tokyo,Japan (2020/01 ~ Now)"), Object(external_preact_["h"])("p", {
-    class: experience_style.description
+    class: cmd_style.description
   }, "As a team leader of 9 people web application group, I have lead the team to deliver features in educational field. Examples of actions I have taken are as follows."), Object(external_preact_["h"])("ul", null, Object(external_preact_["h"])("li", null, "Create a career ladder to clarify the career goals and current status of the members"), Object(external_preact_["h"])("li", null, "Introduced scrum development and reduced project delays"))), Object(external_preact_["h"])("div", {
-    class: experience_style.experience
+    class: cmd_style.experience
   }, Object(external_preact_["h"])("p", {
-    class: experience_style.title
+    class: cmd_style.title
   }, Object(external_preact_["h"])("strong", null, "3) Back-End Engineer"), ", Studyplus,Inc. Tokyo,Japan (2018/09 ~ 2020/12)"), Object(external_preact_["h"])("p", {
-    class: experience_style.description
+    class: cmd_style.description
   }, "As part of B2B SaaS Web Application Team, I have delivered features to improve the learning efficiency of students and teachers."), Object(external_preact_["h"])("ul", null, Object(external_preact_["h"])("li", null, "Migrate monolith Ruby on Rails App into REST API and React SPA"), Object(external_preact_["h"])("li", null, "Introduce Schema Driven Development process"), Object(external_preact_["h"])("li", null, "Implement front-end and back-end across ambiguous systems and environment"))), Object(external_preact_["h"])("div", {
-    class: experience_style.experience
+    class: cmd_style.experience
   }, Object(external_preact_["h"])("p", {
-    class: experience_style.title
+    class: cmd_style.title
   }, Object(external_preact_["h"])("strong", null, "4) System Engineer"), ", Technobrain ,Inc. Tokyo,Japan (2017/09 ~ 2018/08)"), Object(external_preact_["h"])("p", {
-    class: experience_style.description
+    class: cmd_style.description
   }, "As a system engineer of contract software development team, I have developed a internal use buisiness operation web application.")));
 };
 // CONCATENATED MODULE: ./components/terminal/cmd/index.tsx
@@ -738,24 +855,16 @@ var experience_CommandExperience = function CommandExperience() {
 
 
 
-var cmd_Cmd = function Cmd(_ref) {
-  var command = _ref.command,
-    args = _ref.args,
-    rawInput = _ref.rawInput;
+var cmd_Cmd = function Cmd(props) {
+  if (props.hidden) return null;
   return Object(external_preact_["h"])(external_preact_["Fragment"], null, Object(external_preact_["h"])("p", null, Object(external_preact_["h"])("span", {
     class: terminal_style.prompt
   }, PROMPT), Object(external_preact_["h"])("span", {
     class: terminal_style.command
-  }, rawInput)), Object(external_preact_["h"])("div", {
-    class: terminal_style.output
-  }, Object(external_preact_["h"])(cmd_CmdOutput, {
-    command: command,
-    args: args,
-    rawInput: rawInput
-  })));
+  }, props.rawInput)), Object(external_preact_["h"])(cmd_CmdOutput, props));
 };
-var cmd_CmdOutput = function CmdOutput(_ref2) {
-  var command = _ref2.command;
+var cmd_CmdOutput = function CmdOutput(_ref) {
+  var command = _ref.command;
   switch (command) {
     case 'help':
       {
@@ -765,9 +874,13 @@ var cmd_CmdOutput = function CmdOutput(_ref2) {
       {
         return Object(external_preact_["h"])(experience_CommandExperience, null);
       }
+    case '':
+      {
+        return null;
+      }
     default:
       {
-        return Object(external_preact_["h"])(error_CommandError, {
+        return Object(external_preact_["h"])(error_CommandNotFound, {
           command: command
         });
       }
@@ -782,6 +895,7 @@ var PROMPT = "guest@atomiyama.dev:~$";
 var terminal_Terminal = function Terminal() {
   var _useCmd = useCmd_useCmd(),
     formRef = _useCmd.formRef,
+    inputRef = _useCmd.inputRef,
     commandProps = _useCmd.commandProps,
     handleExecCmd = _useCmd.handleExecCmd;
   return Object(external_preact_["h"])("div", {
@@ -794,12 +908,14 @@ var terminal_Terminal = function Terminal() {
     }, Object(external_preact_["h"])(cmd_Cmd, props));
   }), Object(external_preact_["h"])(terminal_Prompt, {
     handleExecCmd: handleExecCmd,
-    formRef: formRef
+    formRef: formRef,
+    inputRef: inputRef
   }));
 };
 var terminal_Prompt = function Prompt(_ref) {
   var handleExecCmd = _ref.handleExecCmd,
-    formRef = _ref.formRef;
+    formRef = _ref.formRef,
+    inputRef = _ref.inputRef;
   var handleSubmit = function handleSubmit(e) {
     e.preventDefault();
     var input = e.target.command.value;
@@ -815,6 +931,7 @@ var terminal_Prompt = function Prompt(_ref) {
   }, Object(external_preact_["h"])("span", {
     class: terminal_style.prompt
   }, PROMPT), Object(external_preact_["h"])("input", {
+    ref: inputRef,
     type: "text",
     name: "command",
     class: terminal_style.command,
@@ -825,52 +942,18 @@ var terminal_Prompt = function Prompt(_ref) {
 // CONCATENATED MODULE: ./routes/home/index.tsx
 
 
-
 var home_Home = function Home() {
-  return Object(external_preact_["h"])("div", {
-    class: style.home
-  }, Object(external_preact_["h"])(terminal_Terminal, null));
+  return Object(external_preact_["h"])(terminal_Terminal, null);
 };
 /* harmony default export */ var home = (home_Home);
-// CONCATENATED MODULE: ./components/header/style.css
-// extracted by mini-css-extract-plugin
-/* harmony default export */ var header_style = ({"title":"title__I4umU","subtitle":"subtitle__0gF3H"});
-// CONCATENATED MODULE: ./components/header/index.tsx
+// CONCATENATED MODULE: ./routes/posts/index.tsx
 
-
-var header_Header = function Header() {
-  return Object(external_preact_["h"])("header", null, Object(external_preact_["h"])("h1", {
-    class: header_style.title
-  }, "Akifumi Akazawa(Tomiyama)"), Object(external_preact_["h"])("p", {
-    class: header_style.subtitle
-  }, "Software Engineer skilled in Web Application and Data Engineering."), Object(external_preact_["h"])("nav", null, Object(external_preact_["h"])("ul", null, Object(external_preact_["h"])("li", null, Object(external_preact_["h"])("a", {
-    class: "fa-brands fa-github",
-    href: "https://github.com/atomiyama"
-  }, Object(external_preact_["h"])("span", {
-    class: header_style.label
-  }, "GitHub"))), Object(external_preact_["h"])("li", null, Object(external_preact_["h"])("a", {
-    class: "fa-brands fa-twitter",
-    href: "https://twitter.com/atomiyama1216"
-  }, Object(external_preact_["h"])("span", {
-    class: header_style.label
-  }, "Twitter"))), Object(external_preact_["h"])("li", null, Object(external_preact_["h"])("a", {
-    class: "fa-brands fa-linkedin",
-    href: "https://linkedin.com/in/atomiyama1216"
-  }, Object(external_preact_["h"])("span", {
-    class: header_style.label
-  }, "LinkedIn"))), Object(external_preact_["h"])("li", null, Object(external_preact_["h"])("a", {
-    class: "fa-brands fa-facebook",
-    href: "https://www.facebook.com/atomiyama1216"
-  }, Object(external_preact_["h"])("span", {
-    class: header_style.label
-  }, "Facebook"))), Object(external_preact_["h"])("li", null, Object(external_preact_["h"])("a", {
-    class: "fa-regular fa-envelope",
-    href: "mailto:tomisuker16@gmail.com"
-  }, Object(external_preact_["h"])("span", {
-    class: header_style.label
-  }, "Email"))))), Object(external_preact_["h"])("hr", null));
+var posts_Posts = function Posts() {
+  return Object(external_preact_["h"])("h1", null, "Posts");
 };
+/* harmony default export */ var posts = (posts_Posts);
 // CONCATENATED MODULE: ./components/app.tsx
+
 
 
 
@@ -883,6 +966,9 @@ var app_App = function App() {
   }, Object(external_preact_["h"])(header_Header, null), Object(external_preact_["h"])("main", null, Object(external_preact_["h"])(preact_router_es_Router, null, Object(external_preact_["h"])(preact_router_es_Route, {
     path: "/",
     component: home
+  }), Object(external_preact_["h"])(preact_router_es_Route, {
+    path: "/posts",
+    component: posts
   }))));
 };
 /* harmony default export */ var app = (app_App);

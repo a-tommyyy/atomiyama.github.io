@@ -1,13 +1,6 @@
 :root {
-	font-family: 'Helvetica Neue', arial, sans-serif;
-	font-weight: 400;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
-
-	background-color: #073642;
-	font-family: "Hack", monospace;
-	font-size: 14px;
-	line-height: 1.5;
 
 	--base03:    #002b36;
 	--base02:    #073642;
@@ -25,13 +18,19 @@
 	--blue:      #268bd2;
 	--cyan:      #2aa198;
 	--green:     #859900;
+
+	background-color: var(--base02);
+  color: var(--base0);
+	font-family: "Hack", monospace;
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 1.5;
 }
 
 body {
 	margin: 0;
 	padding: 0;
 	min-height: 100vh;
-	overflow: hidden;
 }
 
 a {
@@ -41,67 +40,43 @@ a {
 #app > main {
 	padding: 1.6rem;
 	margin: 0;
-	height: calc(100vh - 16.4rem);
 	-ms-flex-align: center;
 	    align-items: center;
 	-ms-flex-pack: center;
 	    justify-content: center;
 }
-
-@media (max-width: 639px) {
-	#app > main {
-		margin: 0 2rem;
-	}
-}
-
-.home__uRcqa {
-  height: 100%;
-  overflow: scroll;
-}
-
-hr {
-  border: 1px solid var(--base01);
-}
-
-.activeprompt__Y1ehr{
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.prompt__OSu4E {
-  color: var(--yellow);
-}
-
-.command__yT2Am {
+header {
+  padding: 1.6rem;
+  padding-bottom: 0;
   background-color: var(--base02);
-  border: none;
-  color: var(--base0);
-  font-family: "Hack", monospace;
-  font-size: 14px;
-  width: 100%;
-  box-sizing: border-box;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
 }
 
-.command__yT2Am:focus {
-	outline: none;
+header ul {
+  list-style: none;
+  padding: 0;
 }
 
-.output__JItyU {
-  color: var(--base0);
-  white-space: pre-wrap;
-  margin-bottom: 1.5rem;
+header nav li {
+  display: inline-block;
+  margin-right: 1.6rem;
 }
 
-.error__qfBhC {
-  color: var(--red);
-  margin-bottom: 1.5rem;
+.title__I4umU {
+  color: var(--cyan);
 }
 
-p {
-  margin: 0;
+.subtitle__0gF3H {
+  color: var(--yellow);
+  font-weight: bold;
 }
 .terminal__Ns8FN {
   color: var(--base0);
+}
+.terminal__Ns8FN p {
+  margin: 0;
 }
 
 .welcome__8TTjf {
@@ -130,47 +105,27 @@ p {
 .command__JBFdT:focus {
 	outline: none;
 }
-
-.output__nSgGw {
+.output__Y6snD {
   white-space: pre-wrap;
   margin: 1rem 1.6rem;
 }
-.error__BiDa2 {
+
+.error__HYsFw {
   color: var(--red);
+  margin-bottom: 1.6rem;
 }
-.experience__3u\+lq {
+
+.experience__mujx- {
   padding-left: 1.6rem;
   margin-bottom: 0.8rem;
 }
 
-.title__BJfmc {
+.title__UtO8N {
   color: var(--cyan);
 }
 
-.description__zEN7V {
+.description__DD9lX {
   padding-left: 1.6rem;
 }
-header {
-  height: 10rem;
-  padding: 1.6rem;
-}
 
-header ul {
-  list-style: none;
-  padding: 0;
-}
-
-header nav li {
-  display: inline-block;
-  margin-right: 1.6rem;
-}
-
-.title__I4umU {
-  color: var(--cyan);
-}
-
-.subtitle__0gF3H {
-  color: var(--yellow);
-}
-
-/*# sourceMappingURL=ssr-bundle.3f7dd.css.map*/
+/*# sourceMappingURL=ssr-bundle.c2445.css.map*/
