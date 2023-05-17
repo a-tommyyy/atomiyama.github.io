@@ -10,9 +10,8 @@ export const CommandHelp = () => {
 					<li>help -- List of available commands</li>
 					<li>experience -- List of professional experiences</li>
 					<li>skills -- List of skills</li>
-					<li>education -- List of education(Not Implemented)</li>
-					<li>contact -- List of contact information(Not Implemented)</li>
-					<li>activity -- List of activities and interests(Not Implemented)</li>
+					<li>education -- List of education</li>
+					<li>activities -- List of activities</li>
 				</ul>
 			</div>
 			<div class={style.section}>

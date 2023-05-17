@@ -5,6 +5,7 @@ import { CommandHelp } from './help';
 import { CommandNotFound } from './error';
 import { CommandExperience } from './experience';
 import { CommandSkills } from './skills';
+import { CommandEducation } from './education';
 
 export type CmdProps = {
   rawInput: string;
@@ -36,6 +37,9 @@ const CmdOutput = ({ command }: CmdProps) => {
     }
     case 'skills': {
       return <CommandSkills />
+    }
+    case 'education': {
+      return <CommandEducation />
     }
     case '': {
       return null
