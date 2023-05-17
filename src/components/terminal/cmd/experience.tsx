@@ -5,7 +5,7 @@ export const CommandExperience = () => {
   return (
     <div class={style.output}>
       <strong>Professional Experience :</strong>
-      <div class={style.experience}>
+      <div class={style.section}>
         <p class={style.title}>
         <strong>1) Customer Reliability Engineer</strong>, Studyplus,Inc. Tokyo,Japan (2022/05 ~ Now)
         </p>
@@ -17,7 +17,7 @@ export const CommandExperience = () => {
           <li>Implement system to detect messages between users that violate the terms of service.(1M messages/month)</li>
         </ul>
       </div>
-      <div class={style.experience}>
+      <div class={style.section}>
         <p class={style.title}>
           <strong>2) Team Leader</strong>, Studyplus,Inc. Tokyo,Japan (2020/01 ~ Now)
         </p>
@@ -29,7 +29,7 @@ export const CommandExperience = () => {
           <li>Introduced scrum development and reduced project delays</li>
         </ul>
       </div>
-      <div class={style.experience}>
+      <div class={style.section}>
         <p class={style.title}>
           <strong>3) Back-End Engineer</strong>, Studyplus,Inc. Tokyo,Japan (2018/09 ~ 2020/12)
         </p>
@@ -42,7 +42,7 @@ export const CommandExperience = () => {
           <li>Implement front-end and back-end across ambiguous systems and environment</li>
         </ul>
       </div>
-      <div class={style.experience}>
+      <div class={style.section}>
         <p class={style.title}>
           <strong>4) System Engineer</strong>, Technobrain ,Inc. Tokyo,Japan (2017/09 ~ 2018/08)
         </p>
