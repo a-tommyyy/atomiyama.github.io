@@ -9,6 +9,7 @@ import Posts from '../routes/posts';
 const App = () => (
 	<div id="app">
 		<Header />
+		<Header ariaHidden />
 		<main>
 			<Router>
 				<Route path="/" component={Home} />

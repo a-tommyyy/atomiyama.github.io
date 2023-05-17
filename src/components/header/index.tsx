@@ -2,8 +2,11 @@ import { h } from 'preact';
 import style from './style.css';
 import { Link } from 'preact-router';
 
-export const Header = () => (
-	<header>
+export const Header = ({ ariaHidden }: { ariaHidden?: boolean }) => (
+	<header
+	 aria-hidden={!!ariaHidden}
+	 class={`${style.header} ${ariaHidden ? style.header_hidden : style.header_fixed}`}
+	>
 		<h1 class={style.title}>Akifumi Akazawa(Tomiyama)</h1>
 		<p class={style.subtitle}>Software Engineer skilled in Web Application and Data Engineering.</p>
 		<nav>
