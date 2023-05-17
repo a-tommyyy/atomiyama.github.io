@@ -433,13 +433,17 @@ preact_router_es_Router.exec = exec;
 /* harmony default export */ var preact_router_es = (preact_router_es_Router);
 // CONCATENATED MODULE: ./components/header/style.css
 // extracted by mini-css-extract-plugin
-/* harmony default export */ var style = ({"title":"title__I4umU","subtitle":"subtitle__0gF3H"});
+/* harmony default export */ var style = ({"header":"header__OVZyn","header_fixed":"header_fixed__e+u-O","header_hidden":"header_hidden__HZ-RF","title":"title__I4umU","subtitle":"subtitle__0gF3H"});
 // CONCATENATED MODULE: ./components/header/index.tsx
 
 
 
-var header_Header = function Header() {
-  return Object(external_preact_["h"])("header", null, Object(external_preact_["h"])("h1", {
+var header_Header = function Header(_ref) {
+  var ariaHidden = _ref.ariaHidden;
+  return Object(external_preact_["h"])("header", {
+    "aria-hidden": !!ariaHidden,
+    class: "".concat(style.header, " ").concat(ariaHidden ? style.header_hidden : style.header_fixed)
+  }, Object(external_preact_["h"])("h1", {
     class: style.title
   }, "Akifumi Akazawa(Tomiyama)"), Object(external_preact_["h"])("p", {
     class: style.subtitle
@@ -793,7 +797,7 @@ var useCmd_useCmd = function useCmd() {
 };
 // CONCATENATED MODULE: ./components/terminal/cmd/style.css
 // extracted by mini-css-extract-plugin
-/* harmony default export */ var cmd_style = ({"output":"output__Y6snD","error":"error__HYsFw","experience":"experience__mujx-","title":"title__UtO8N","description":"description__DD9lX"});
+/* harmony default export */ var cmd_style = ({"output":"output__Y6snD","error":"error__HYsFw","section":"section__AQ-WW","title":"title__UtO8N","description":"description__DD9lX"});
 // CONCATENATED MODULE: ./components/terminal/cmd/help.tsx
 
 
@@ -804,7 +808,7 @@ var help_CommandHelp = function CommandHelp() {
     class: cmd_style.section
   }, Object(external_preact_["h"])("p", {
     class: cmd_style.title
-  }, "Available Commands :"), Object(external_preact_["h"])("ul", null, Object(external_preact_["h"])("li", null, "help -- List of available commands"), Object(external_preact_["h"])("li", null, "experience -- List of professional experiences"), Object(external_preact_["h"])("li", null, "skills -- List of skills(Not Implemented)"), Object(external_preact_["h"])("li", null, "education -- List of education(Not Implemented)"), Object(external_preact_["h"])("li", null, "contact -- List of contact information(Not Implemented)"), Object(external_preact_["h"])("li", null, "activity -- List of activities and interests(Not Implemented)"))), Object(external_preact_["h"])("div", {
+  }, "Available Commands :"), Object(external_preact_["h"])("ul", null, Object(external_preact_["h"])("li", null, "help -- List of available commands"), Object(external_preact_["h"])("li", null, "experience -- List of professional experiences"), Object(external_preact_["h"])("li", null, "skills -- List of skills"), Object(external_preact_["h"])("li", null, "education -- List of education"), Object(external_preact_["h"])("li", null, "activities -- List of activities"))), Object(external_preact_["h"])("div", {
     class: cmd_style.section
   }, Object(external_preact_["h"])("p", {
     class: cmd_style.title
@@ -826,32 +830,133 @@ var experience_CommandExperience = function CommandExperience() {
   return Object(external_preact_["h"])("div", {
     class: cmd_style.output
   }, Object(external_preact_["h"])("strong", null, "Professional Experience :"), Object(external_preact_["h"])("div", {
-    class: cmd_style.experience
+    class: cmd_style.section
   }, Object(external_preact_["h"])("p", {
     class: cmd_style.title
   }, Object(external_preact_["h"])("strong", null, "1) Customer Reliability Engineer"), ", Studyplus,Inc. Tokyo,Japan (2022/05 ~ Now)"), Object(external_preact_["h"])("p", {
     class: cmd_style.description
   }, "A first member of the team. Decrease Customer's anxiety and increase Customer's satisfaction by improving the reliability of the service."), Object(external_preact_["h"])("ul", null, Object(external_preact_["h"])("li", null, "Building Data Pipeline and Data Warehouse(~500 tables, 1billion records)"), Object(external_preact_["h"])("li", null, "Implement system to detect messages between users that violate the terms of service.(1M messages/month)"))), Object(external_preact_["h"])("div", {
-    class: cmd_style.experience
+    class: cmd_style.section
   }, Object(external_preact_["h"])("p", {
     class: cmd_style.title
   }, Object(external_preact_["h"])("strong", null, "2) Team Leader"), ", Studyplus,Inc. Tokyo,Japan (2020/01 ~ Now)"), Object(external_preact_["h"])("p", {
     class: cmd_style.description
   }, "As a team leader of 9 people web application group, I have lead the team to deliver features in educational field. Examples of actions I have taken are as follows."), Object(external_preact_["h"])("ul", null, Object(external_preact_["h"])("li", null, "Create a career ladder to clarify the career goals and current status of the members"), Object(external_preact_["h"])("li", null, "Introduced scrum development and reduced project delays"))), Object(external_preact_["h"])("div", {
-    class: cmd_style.experience
+    class: cmd_style.section
   }, Object(external_preact_["h"])("p", {
     class: cmd_style.title
   }, Object(external_preact_["h"])("strong", null, "3) Back-End Engineer"), ", Studyplus,Inc. Tokyo,Japan (2018/09 ~ 2020/12)"), Object(external_preact_["h"])("p", {
     class: cmd_style.description
   }, "As part of B2B SaaS Web Application Team, I have delivered features to improve the learning efficiency of students and teachers."), Object(external_preact_["h"])("ul", null, Object(external_preact_["h"])("li", null, "Migrate monolith Ruby on Rails App into REST API and React SPA"), Object(external_preact_["h"])("li", null, "Introduce Schema Driven Development process"), Object(external_preact_["h"])("li", null, "Implement front-end and back-end across ambiguous systems and environment"))), Object(external_preact_["h"])("div", {
-    class: cmd_style.experience
+    class: cmd_style.section
   }, Object(external_preact_["h"])("p", {
     class: cmd_style.title
   }, Object(external_preact_["h"])("strong", null, "4) System Engineer"), ", Technobrain ,Inc. Tokyo,Japan (2017/09 ~ 2018/08)"), Object(external_preact_["h"])("p", {
     class: cmd_style.description
   }, "As a system engineer of contract software development team, I have developed a internal use buisiness operation web application.")));
 };
+// CONCATENATED MODULE: ./components/terminal/cmd/skills.tsx
+
+
+var skills_CommandSkills = function CommandSkills() {
+  return Object(external_preact_["h"])("div", {
+    class: cmd_style.output
+  }, Object(external_preact_["h"])("strong", null, "Skills :"), Object(external_preact_["h"])("div", {
+    class: cmd_style.section
+  }, Object(external_preact_["h"])("p", {
+    class: cmd_style.title
+  }, "Software Development"), Object(external_preact_["h"])("ul", null, Object(external_preact_["h"])("li", null, "Ruby"), Object(external_preact_["h"])("li", null, "Node.js"), Object(external_preact_["h"])("li", null, "Go"), Object(external_preact_["h"])("li", null, "Python"), Object(external_preact_["h"])("li", null, "Rust"))), Object(external_preact_["h"])("div", {
+    class: cmd_style.section
+  }, Object(external_preact_["h"])("p", {
+    class: cmd_style.title
+  }, "Data Engineering"), Object(external_preact_["h"])("ul", null, Object(external_preact_["h"])("li", null, "digdag"), Object(external_preact_["h"])("li", null, "embulk"), Object(external_preact_["h"])("li", null, "GCP BigQuery"), Object(external_preact_["h"])("li", null, "GCP Datastream"), Object(external_preact_["h"])("li", null, "GCP Dataform"))), Object(external_preact_["h"])("div", {
+    class: cmd_style.section
+  }, Object(external_preact_["h"])("p", {
+    class: cmd_style.title
+  }, "Web Development"), Object(external_preact_["h"])("ul", null, Object(external_preact_["h"])("li", null, "HTML"), Object(external_preact_["h"])("li", null, "CSS"), Object(external_preact_["h"])("li", null, "JavaScript/TypeScript"), Object(external_preact_["h"])("li", null, "React/Next.js"), Object(external_preact_["h"])("li", null, "Ruby on Rails"), Object(external_preact_["h"])("li", null, "Sidekiq"))), Object(external_preact_["h"])("div", {
+    class: cmd_style.section
+  }, Object(external_preact_["h"])("p", {
+    class: cmd_style.title
+  }, "Misc"), Object(external_preact_["h"])("ul", null, Object(external_preact_["h"])("li", null, "Git"), Object(external_preact_["h"])("li", null, "Scrum Development"), Object(external_preact_["h"])("li", null, "Schema Driven Development"), Object(external_preact_["h"])("li", null, "Interviewing"), Object(external_preact_["h"])("li", null, "Team organization"))), Object(external_preact_["h"])("div", {
+    class: cmd_style.section
+  }, Object(external_preact_["h"])("p", {
+    class: cmd_style.title
+  }, "Interests"), Object(external_preact_["h"])("ul", null, Object(external_preact_["h"])("li", null, "Engineering excellence"), Object(external_preact_["h"])("li", null, "Authorization and Authentication"), Object(external_preact_["h"])("li", null, "Machine Learning"))));
+};
+// CONCATENATED MODULE: ./components/terminal/cmd/education.tsx
+
+
+var education_CommandEducation = function CommandEducation() {
+  return Object(external_preact_["h"])("div", {
+    class: cmd_style.output
+  }, Object(external_preact_["h"])("strong", null, "Education :"), Object(external_preact_["h"])("div", {
+    class: cmd_style.section
+  }, Object(external_preact_["h"])("p", {
+    class: cmd_style.title
+  }, "Iwate Prefectural University(2013~2017)"), Object(external_preact_["h"])("p", {
+    class: cmd_style.description
+  }, Object(external_preact_["h"])("strong", null, "Unfinished")), Object(external_preact_["h"])("p", {
+    class: cmd_style.description
+  }, "Completed 66 Credits towards a Bachelor of Policy Management")));
+};
+// CONCATENATED MODULE: ./components/terminal/cmd/activities.tsx
+
+
+var activities_CommandActivities = function CommandActivities() {
+  return Object(external_preact_["h"])("div", {
+    class: cmd_style.output
+  }, Object(external_preact_["h"])("strong", null, "Activities :"), Object(external_preact_["h"])("div", {
+    class: cmd_style.section
+  }, Object(external_preact_["h"])("p", {
+    class: cmd_style.title
+  }, Object(external_preact_["h"])("strong", null, "Feb 2023)")), Object(external_preact_["h"])("p", {
+    class: cmd_style.description
+  }, "Release conventional commit stat tool ", Object(external_preact_["h"])("a", {
+    href: "https://github.com/atomiyama/ccstat"
+  }, Object(external_preact_["h"])("b", null, "ccstat")))), Object(external_preact_["h"])("div", {
+    class: cmd_style.section
+  }, Object(external_preact_["h"])("p", {
+    class: cmd_style.title
+  }, Object(external_preact_["h"])("strong", null, "December 2019)")), Object(external_preact_["h"])("p", {
+    class: cmd_style.description
+  }, Object(external_preact_["h"])("span", null, "Presentation ", Object(external_preact_["h"])("b", null, Object(external_preact_["h"])("i", null, "Build Gem in Rust "))), Object(external_preact_["h"])("span", null, "at ", Object(external_preact_["h"])("a", {
+    href: "https://heiseirb.connpass.com/event/151414/"
+  }, "heisei.rb#9"))), Object(external_preact_["h"])("p", {
+    class: cmd_style.description
+  }, Object(external_preact_["h"])("a", {
+    href: "https://speakerdeck.com/atomiyama/rustdegemwozuo-rou"
+  }, "Speaker Deck"))), Object(external_preact_["h"])("div", {
+    class: cmd_style.section
+  }, Object(external_preact_["h"])("p", {
+    class: cmd_style.title
+  }, Object(external_preact_["h"])("strong", null, "Oct 2019)")), Object(external_preact_["h"])("p", {
+    class: cmd_style.description
+  }, Object(external_preact_["h"])("span", null, "Presentation ", Object(external_preact_["h"])("b", null, Object(external_preact_["h"])("i", null, "FFI & Native Extension "))), Object(external_preact_["h"])("span", null, "at ", Object(external_preact_["h"])("a", {
+    href: "https://heiseirb.connpass.com/event/148650/"
+  }, "heisei.rb#9"))), Object(external_preact_["h"])("p", {
+    class: cmd_style.description
+  }, Object(external_preact_["h"])("a", {
+    href: "https://speakerdeck.com/atomiyama/ffi-and-native-extension"
+  }, "Speaker Deck"))), Object(external_preact_["h"])("div", {
+    class: cmd_style.section
+  }, Object(external_preact_["h"])("p", {
+    class: cmd_style.title
+  }, Object(external_preact_["h"])("strong", null, "Dec 2018)")), Object(external_preact_["h"])("p", {
+    class: cmd_style.description
+  }, "Release Cursor based pagination gem ", Object(external_preact_["h"])("a", {
+    href: "https://github.com/studyplus/jinrai"
+  }, "jinrai"))), Object(external_preact_["h"])("div", {
+    class: cmd_style.section
+  }, Object(external_preact_["h"])("p", {
+    class: cmd_style.title
+  }, Object(external_preact_["h"])("strong", null, "Jun 2018)")), Object(external_preact_["h"])("p", {
+    class: cmd_style.description
+  }, "Applied Information Technology Engineer Examination")));
+};
 // CONCATENATED MODULE: ./components/terminal/cmd/index.tsx
+
+
+
 
 
 
@@ -876,6 +981,18 @@ var cmd_CmdOutput = function CmdOutput(_ref) {
     case 'experience':
       {
         return Object(external_preact_["h"])(experience_CommandExperience, null);
+      }
+    case 'skills':
+      {
+        return Object(external_preact_["h"])(skills_CommandSkills, null);
+      }
+    case 'education':
+      {
+        return Object(external_preact_["h"])(education_CommandEducation, null);
+      }
+    case 'activities':
+      {
+        return Object(external_preact_["h"])(activities_CommandActivities, null);
       }
     case '':
       {
@@ -966,7 +1083,9 @@ var posts_Posts = function Posts() {
 var app_App = function App() {
   return Object(external_preact_["h"])("div", {
     id: "app"
-  }, Object(external_preact_["h"])(header_Header, null), Object(external_preact_["h"])("main", null, Object(external_preact_["h"])(preact_router_es_Router, null, Object(external_preact_["h"])(preact_router_es_Route, {
+  }, Object(external_preact_["h"])(header_Header, null), Object(external_preact_["h"])(header_Header, {
+    ariaHidden: true
+  }), Object(external_preact_["h"])("main", null, Object(external_preact_["h"])(preact_router_es_Router, null, Object(external_preact_["h"])(preact_router_es_Route, {
     path: "/",
     component: home
   }), Object(external_preact_["h"])(preact_router_es_Route, {

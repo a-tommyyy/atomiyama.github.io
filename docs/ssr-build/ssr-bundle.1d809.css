@@ -45,21 +45,29 @@ a {
 	-ms-flex-pack: center;
 	    justify-content: center;
 }
-header {
+.header__OVZyn {
   padding: 1.6rem;
   padding-bottom: 0;
   background-color: var(--base02);
-  position: -webkit-sticky;
-  position: sticky;
+}
+
+.header_fixed__e\+u-O {
+  position: fixed;
+  left: 0;
+  right: 0;
   top: 0;
 }
 
-header ul {
+.header_hidden__HZ-RF {
+  visibility: hidden;
+}
+
+.header__OVZyn ul {
   list-style: none;
   padding: 0;
 }
 
-header nav li {
+.header__OVZyn nav li {
   display: inline-block;
   margin-right: 1.6rem;
 }
@@ -115,7 +123,7 @@ header nav li {
   margin-bottom: 1.6rem;
 }
 
-.experience__mujx- {
+.section__AQ-WW {
   padding-left: 1.6rem;
   margin-bottom: 0.8rem;
 }
@@ -128,4 +136,4 @@ header nav li {
   padding-left: 1.6rem;
 }
 
-/*# sourceMappingURL=ssr-bundle.c2445.css.map*/
+/*# sourceMappingURL=ssr-bundle.1d809.css.map*/
