@@ -6,6 +6,7 @@ import { CommandNotFound } from './error';
 import { CommandExperience } from './experience';
 import { CommandSkills } from './skills';
 import { CommandEducation } from './education';
+import { CommandActivities } from './activities';
 
 export type CmdProps = {
   rawInput: string;
@@ -40,6 +41,9 @@ const CmdOutput = ({ command }: CmdProps) => {
     }
     case 'education': {
       return <CommandEducation />
+    }
+    case 'activities': {
+      return <CommandActivities />
     }
     case '': {
       return null
