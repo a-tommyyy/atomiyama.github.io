@@ -1,1 +1,0 @@
-{"version":3,"sources":["webpack:///./routes/posts/index.tsx"],"names":["Posts","h"],"mappings":"2FAAA,uBAQeA,UANF,WACZ,OACGC,YAAA,UAAI,QAER,C","file":"route-posts.chunk.03494.js","sourcesContent":["import { h } from 'preact';\n\nconst Posts= () => {\n\treturn (\n    <h1>Posts</h1>\n\t);\n};\n\nexport default Posts;"],"sourceRoot":""}

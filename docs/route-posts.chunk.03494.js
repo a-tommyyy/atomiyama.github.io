@@ -1,2 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[3],{yKEw:function(n,o,s){"use strict";s.r(o);var t=s("hosL");o.default=function(){return Object(t.e)("h1",null,"Posts")}}}]);
-//# sourceMappingURL=route-posts.chunk.03494.js.map
