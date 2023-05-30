@@ -257,384 +257,6 @@ __webpack_require__.r(__webpack_exports__);
 // EXTERNAL MODULE: external "preact"
 var external_preact_ = __webpack_require__("HteQ");
 
-// CONCATENATED MODULE: ../node_modules/preact-router/dist/preact-router.es.js
-
-var EMPTY$1 = {};
-function preact_router_es_assign(obj, props) {
-  // eslint-disable-next-line guard-for-in
-  for (var i in props) {
-    obj[i] = props[i];
-  }
-  return obj;
-}
-function exec(url, route, opts) {
-  var reg = /(?:\?([^#]*))?(#.*)?$/,
-    c = url.match(reg),
-    matches = {},
-    ret;
-  if (c && c[1]) {
-    var p = c[1].split('&');
-    for (var i = 0; i < p.length; i++) {
-      var r = p[i].split('=');
-      matches[decodeURIComponent(r[0])] = decodeURIComponent(r.slice(1).join('='));
-    }
-  }
-  url = segmentize(url.replace(reg, ''));
-  route = segmentize(route || '');
-  var max = Math.max(url.length, route.length);
-  for (var i$1 = 0; i$1 < max; i$1++) {
-    if (route[i$1] && route[i$1].charAt(0) === ':') {
-      var param = route[i$1].replace(/(^:|[+*?]+$)/g, ''),
-        flags = (route[i$1].match(/[+*?]+$/) || EMPTY$1)[0] || '',
-        plus = ~flags.indexOf('+'),
-        star = ~flags.indexOf('*'),
-        val = url[i$1] || '';
-      if (!val && !star && (flags.indexOf('?') < 0 || plus)) {
-        ret = false;
-        break;
-      }
-      matches[param] = decodeURIComponent(val);
-      if (plus || star) {
-        matches[param] = url.slice(i$1).map(decodeURIComponent).join('/');
-        break;
-      }
-    } else if (route[i$1] !== url[i$1]) {
-      ret = false;
-      break;
-    }
-  }
-  if (opts.default !== true && ret === false) {
-    return false;
-  }
-  return matches;
-}
-function pathRankSort(a, b) {
-  return a.rank < b.rank ? 1 : a.rank > b.rank ? -1 : a.index - b.index;
-}
-
-// filter out VNodes without attributes (which are unrankeable), and add `index`/`rank` properties to be used in sorting.
-function prepareVNodeForRanking(vnode, index) {
-  vnode.index = index;
-  vnode.rank = rankChild(vnode);
-  return vnode.props;
-}
-function segmentize(url) {
-  return url.replace(/(^\/+|\/+$)/g, '').split('/');
-}
-function rankSegment(segment) {
-  return segment.charAt(0) == ':' ? 1 + '*+?'.indexOf(segment.charAt(segment.length - 1)) || 4 : 5;
-}
-function rank(path) {
-  return segmentize(path).map(rankSegment).join('');
-}
-function rankChild(vnode) {
-  return vnode.props.default ? 0 : rank(vnode.props.path);
-}
-var customHistory = null;
-var ROUTERS = [];
-var subscribers = [];
-var EMPTY = {};
-function setUrl(url, type) {
-  if (type === void 0) type = 'push';
-  if (customHistory && customHistory[type]) {
-    customHistory[type](url);
-  } else if (typeof history !== 'undefined' && history[type + 'State']) {
-    history[type + 'State'](null, null, url);
-  }
-}
-function getCurrentUrl() {
-  var url;
-  if (customHistory && customHistory.location) {
-    url = customHistory.location;
-  } else if (customHistory && customHistory.getCurrentLocation) {
-    url = customHistory.getCurrentLocation();
-  } else {
-    url = typeof location !== 'undefined' ? location : EMPTY;
-  }
-  return "" + (url.pathname || '') + (url.search || '');
-}
-function route(url, replace) {
-  if (replace === void 0) replace = false;
-  if (typeof url !== 'string' && url.url) {
-    replace = url.replace;
-    url = url.url;
-  }
-
-  // only push URL into history if we can handle it
-  if (preact_router_es_canRoute(url)) {
-    setUrl(url, replace ? 'replace' : 'push');
-  }
-  return routeTo(url);
-}
-
-/** Check if the given URL can be handled by any router instances. */
-function preact_router_es_canRoute(url) {
-  for (var i = ROUTERS.length; i--;) {
-    if (ROUTERS[i].canRoute(url)) {
-      return true;
-    }
-  }
-  return false;
-}
-
-/** Tell all router instances to handle the given URL.  */
-function routeTo(url) {
-  var didRoute = false;
-  for (var i = 0; i < ROUTERS.length; i++) {
-    if (ROUTERS[i].routeTo(url) === true) {
-      didRoute = true;
-    }
-  }
-  for (var i$1 = subscribers.length; i$1--;) {
-    subscribers[i$1](url);
-  }
-  return didRoute;
-}
-function routeFromLink(node) {
-  // only valid elements
-  if (!node || !node.getAttribute) {
-    return;
-  }
-  var href = node.getAttribute('href'),
-    target = node.getAttribute('target');
-
-  // ignore links with targets and non-path URLs
-  if (!href || !href.match(/^\//g) || target && !target.match(/^_?self$/i)) {
-    return;
-  }
-
-  // attempt to route, if no match simply cede control to browser
-  return route(href);
-}
-function handleLinkClick(e) {
-  if (e.ctrlKey || e.metaKey || e.altKey || e.shiftKey || e.button !== 0) {
-    return;
-  }
-  routeFromLink(e.currentTarget || e.target || this);
-  return prevent(e);
-}
-function prevent(e) {
-  if (e) {
-    if (e.stopImmediatePropagation) {
-      e.stopImmediatePropagation();
-    }
-    if (e.stopPropagation) {
-      e.stopPropagation();
-    }
-    e.preventDefault();
-  }
-  return false;
-}
-function delegateLinkHandler(e) {
-  // ignore events the browser takes care of already:
-  if (e.ctrlKey || e.metaKey || e.altKey || e.shiftKey || e.button !== 0) {
-    return;
-  }
-  var t = e.target;
-  do {
-    if (String(t.nodeName).toUpperCase() === 'A' && t.getAttribute('href')) {
-      if (t.hasAttribute('native')) {
-        return;
-      }
-      // if link is handled by the router, prevent browser defaults
-      if (routeFromLink(t)) {
-        return prevent(e);
-      }
-    }
-  } while (t = t.parentNode);
-}
-var eventListenersInitialized = false;
-function initEventListeners() {
-  if (eventListenersInitialized) {
-    return;
-  }
-  if (typeof addEventListener === 'function') {
-    if (!customHistory) {
-      addEventListener('popstate', function () {
-        routeTo(getCurrentUrl());
-      });
-    }
-    addEventListener('click', delegateLinkHandler);
-  }
-  eventListenersInitialized = true;
-}
-var preact_router_es_Router = function (Component$$1) {
-  function Router(props) {
-    Component$$1.call(this, props);
-    if (props.history) {
-      customHistory = props.history;
-    }
-    this.state = {
-      url: props.url || getCurrentUrl()
-    };
-    initEventListeners();
-  }
-  if (Component$$1) Router.__proto__ = Component$$1;
-  Router.prototype = Object.create(Component$$1 && Component$$1.prototype);
-  Router.prototype.constructor = Router;
-  Router.prototype.shouldComponentUpdate = function shouldComponentUpdate(props) {
-    if (props.static !== true) {
-      return true;
-    }
-    return props.url !== this.props.url || props.onChange !== this.props.onChange;
-  };
-
-  /** Check if the given URL can be matched against any children */
-  Router.prototype.canRoute = function canRoute(url) {
-    var children = Object(external_preact_["toChildArray"])(this.props.children);
-    return this.getMatchingChildren(children, url, false).length > 0;
-  };
-
-  /** Re-render children with a new URL to match against. */
-  Router.prototype.routeTo = function routeTo(url) {
-    this.setState({
-      url: url
-    });
-    var didRoute = this.canRoute(url);
-
-    // trigger a manual re-route if we're not in the middle of an update:
-    if (!this.updating) {
-      this.forceUpdate();
-    }
-    return didRoute;
-  };
-  Router.prototype.componentWillMount = function componentWillMount() {
-    ROUTERS.push(this);
-    this.updating = true;
-  };
-  Router.prototype.componentDidMount = function componentDidMount() {
-    var this$1 = this;
-    if (customHistory) {
-      this.unlisten = customHistory.listen(function (location) {
-        this$1.routeTo("" + (location.pathname || '') + (location.search || ''));
-      });
-    }
-    this.updating = false;
-  };
-  Router.prototype.componentWillUnmount = function componentWillUnmount() {
-    if (typeof this.unlisten === 'function') {
-      this.unlisten();
-    }
-    ROUTERS.splice(ROUTERS.indexOf(this), 1);
-  };
-  Router.prototype.componentWillUpdate = function componentWillUpdate() {
-    this.updating = true;
-  };
-  Router.prototype.componentDidUpdate = function componentDidUpdate() {
-    this.updating = false;
-  };
-  Router.prototype.getMatchingChildren = function getMatchingChildren(children, url, invoke) {
-    return children.filter(prepareVNodeForRanking).sort(pathRankSort).map(function (vnode) {
-      var matches = exec(url, vnode.props.path, vnode.props);
-      if (matches) {
-        if (invoke !== false) {
-          var newProps = {
-            url: url,
-            matches: matches
-          };
-          preact_router_es_assign(newProps, matches);
-          delete newProps.ref;
-          delete newProps.key;
-          return Object(external_preact_["cloneElement"])(vnode, newProps);
-        }
-        return vnode;
-      }
-    }).filter(Boolean);
-  };
-  Router.prototype.render = function render(ref, ref$1) {
-    var children = ref.children;
-    var onChange = ref.onChange;
-    var url = ref$1.url;
-    var active = this.getMatchingChildren(Object(external_preact_["toChildArray"])(children), url, true);
-    var current = active[0] || null;
-    var previous = this.previousUrl;
-    if (url !== previous) {
-      this.previousUrl = url;
-      if (typeof onChange === 'function') {
-        onChange({
-          router: this,
-          url: url,
-          previous: previous,
-          active: active,
-          current: current
-        });
-      }
-    }
-    return current;
-  };
-  return Router;
-}(external_preact_["Component"]);
-var preact_router_es_Link = function Link(props) {
-  return Object(external_preact_["createElement"])('a', preact_router_es_assign({
-    onClick: handleLinkClick
-  }, props));
-};
-var preact_router_es_Route = function Route(props) {
-  return Object(external_preact_["createElement"])(props.component, props);
-};
-preact_router_es_Router.subscribers = subscribers;
-preact_router_es_Router.getCurrentUrl = getCurrentUrl;
-preact_router_es_Router.route = route;
-preact_router_es_Router.Router = preact_router_es_Router;
-preact_router_es_Router.Route = preact_router_es_Route;
-preact_router_es_Router.Link = preact_router_es_Link;
-preact_router_es_Router.exec = exec;
-
-/* harmony default export */ var preact_router_es = (preact_router_es_Router);
-// CONCATENATED MODULE: ./components/header/style.css
-// extracted by mini-css-extract-plugin
-/* harmony default export */ var style = ({"header":"header__OVZyn","header_fixed":"header_fixed__e+u-O","header_hidden":"header_hidden__HZ-RF","title":"title__I4umU","subtitle":"subtitle__0gF3H"});
-// CONCATENATED MODULE: ./components/header/index.tsx
-
-
-
-var header_Header = function Header(_ref) {
-  var ariaHidden = _ref.ariaHidden;
-  return Object(external_preact_["h"])("header", {
-    "aria-hidden": !!ariaHidden,
-    class: "".concat(style.header, " ").concat(ariaHidden ? style.header_hidden : style.header_fixed)
-  }, Object(external_preact_["h"])("h1", {
-    class: style.title
-  }, "Akifumi Akazawa(Tomiyama)"), Object(external_preact_["h"])("p", {
-    class: style.subtitle
-  }, "Software Engineer skilled in Web Application and Data Engineering."), Object(external_preact_["h"])("nav", null, Object(external_preact_["h"])("ul", null, Object(external_preact_["h"])("li", null, Object(external_preact_["h"])(preact_router_es_Link, {
-    class: "fa-solid fa-terminal",
-    href: "/"
-  }, Object(external_preact_["h"])("span", {
-    class: style.label
-  }, "Terminal"))), Object(external_preact_["h"])("li", null, Object(external_preact_["h"])("a", {
-    class: "fa-brands fa-github",
-    href: "https://github.com/atomiyama"
-  }, Object(external_preact_["h"])("span", {
-    class: style.label
-  }, "GitHub"))), Object(external_preact_["h"])("li", null, Object(external_preact_["h"])("a", {
-    class: "fa-brands fa-twitter",
-    href: "https://twitter.com/atomiyama1216"
-  }, Object(external_preact_["h"])("span", {
-    class: style.label
-  }, "Twitter"))), Object(external_preact_["h"])("li", null, Object(external_preact_["h"])("a", {
-    class: "fa-brands fa-linkedin",
-    href: "https://linkedin.com/in/atomiyama1216"
-  }, Object(external_preact_["h"])("span", {
-    class: style.label
-  }, "LinkedIn"))), Object(external_preact_["h"])("li", null, Object(external_preact_["h"])("a", {
-    class: "fa-brands fa-facebook",
-    href: "https://www.facebook.com/atomiyama1216"
-  }, Object(external_preact_["h"])("span", {
-    class: style.label
-  }, "Facebook"))), Object(external_preact_["h"])("li", null, Object(external_preact_["h"])("a", {
-    class: "fa-regular fa-envelope",
-    href: "mailto:tomisuker16@gmail.com"
-  }, Object(external_preact_["h"])("span", {
-    class: style.label
-  }, "Email"))))), Object(external_preact_["h"])("hr", null));
-};
-// EXTERNAL MODULE: ../node_modules/@preact/prerender-data-provider/src/context.js
-var context = __webpack_require__("/3MO");
-
-// EXTERNAL MODULE: ../node_modules/@preact/prerender-data-provider/src/render-prop.js
-var render_prop = __webpack_require__("MFe8");
-
 // CONCATENATED MODULE: ../node_modules/preact/hooks/dist/hooks.module.js
 
 var hooks_module_t,
@@ -642,11 +264,11 @@ var hooks_module_t,
   hooks_module_u,
   hooks_module_i,
   hooks_module_o = 0,
-  f = [],
+  hooks_module_f = [],
   hooks_module_c = [],
   hooks_module_e = external_preact_["options"].__b,
   hooks_module_a = external_preact_["options"].__r,
-  v = external_preact_["options"].diffed,
+  hooks_module_v = external_preact_["options"].diffed,
   hooks_module_l = external_preact_["options"].__c,
   m = external_preact_["options"].unmount;
 function d(t, u) {
@@ -659,10 +281,10 @@ function d(t, u) {
     __V: hooks_module_c
   }), i.__[t];
 }
-function h(n) {
-  return hooks_module_o = 1, s(B, n);
+function hooks_module_h(n) {
+  return hooks_module_o = 1, hooks_module_s(B, n);
 }
-function s(n, u, i) {
+function hooks_module_s(n, u, i) {
   var o = d(hooks_module_t++, 2);
   if (o.t = n, !o.__c && (o.__ = [i ? i(u) : B(void 0, u), function (n) {
     var t = o.__N ? o.__N[0] : o.__[0],
@@ -741,7 +363,7 @@ function x(t, r) {
 }
 function hooks_module_P(n) {
   var u = d(hooks_module_t++, 10),
-    i = h();
+    i = hooks_module_h();
   return u.__ = n, hooks_module_r.componentDidCatch || (hooks_module_r.componentDidCatch = function (n, t) {
     u.__ && u.__(n, t), i[1](n);
   }), [i[0], function () {
@@ -758,7 +380,7 @@ function V() {
   return n.__;
 }
 function b() {
-  for (var t; t = f.shift();) if (t.__P && t.__H) try {
+  for (var t; t = hooks_module_f.shift();) if (t.__P && t.__H) try {
     t.__H.__h.forEach(k), t.__H.__h.forEach(w), t.__H.__h = [];
   } catch (r) {
     t.__H.__h = [], external_preact_["options"].__e(r, t.__v);
@@ -773,9 +395,9 @@ external_preact_["options"].__b = function (n) {
     n.__N && (n.__ = n.__N), n.__V = hooks_module_c, n.__N = n.i = void 0;
   })) : (i.__h.forEach(k), i.__h.forEach(w), i.__h = [])), hooks_module_u = hooks_module_r;
 }, external_preact_["options"].diffed = function (t) {
-  v && v(t);
+  hooks_module_v && hooks_module_v(t);
   var o = t.__c;
-  o && o.__H && (o.__H.__h.length && (1 !== f.push(o) && hooks_module_i === external_preact_["options"].requestAnimationFrame || ((hooks_module_i = external_preact_["options"].requestAnimationFrame) || j)(b)), o.__H.__.forEach(function (n) {
+  o && o.__H && (o.__H.__h.length && (1 !== hooks_module_f.push(o) && hooks_module_i === external_preact_["options"].requestAnimationFrame || ((hooks_module_i = external_preact_["options"].requestAnimationFrame) || j)(b)), o.__H.__.forEach(function (n) {
     n.i && (n.__H = n.i), n.__V !== hooks_module_c && (n.__ = n.__V), n.i = void 0, n.__V = hooks_module_c;
   })), hooks_module_u = hooks_module_r = null;
 }, external_preact_["options"].__c = function (t, r) {
@@ -829,6 +451,266 @@ function B(n, t) {
   return "function" == typeof t ? t(n) : t;
 }
 
+// CONCATENATED MODULE: ../node_modules/preact-router/dist/preact-router.module.js
+
+
+var preact_router_module_a = {};
+function preact_router_module_c(n, t) {
+  for (var r in t) n[r] = t[r];
+  return n;
+}
+function preact_router_module_s(n, t, r) {
+  var i,
+    o = /(?:\?([^#]*))?(#.*)?$/,
+    e = n.match(o),
+    u = {};
+  if (e && e[1]) for (var f = e[1].split("&"), c = 0; c < f.length; c++) {
+    var s = f[c].split("=");
+    u[decodeURIComponent(s[0])] = decodeURIComponent(s.slice(1).join("="));
+  }
+  n = preact_router_module_d(n.replace(o, "")), t = preact_router_module_d(t || "");
+  for (var h = Math.max(n.length, t.length), v = 0; v < h; v++) if (t[v] && ":" === t[v].charAt(0)) {
+    var l = t[v].replace(/(^:|[+*?]+$)/g, ""),
+      p = (t[v].match(/[+*?]+$/) || preact_router_module_a)[0] || "",
+      m = ~p.indexOf("+"),
+      y = ~p.indexOf("*"),
+      U = n[v] || "";
+    if (!U && !y && (p.indexOf("?") < 0 || m)) {
+      i = !1;
+      break;
+    }
+    if (u[l] = decodeURIComponent(U), m || y) {
+      u[l] = n.slice(v).map(decodeURIComponent).join("/");
+      break;
+    }
+  } else if (t[v] !== n[v]) {
+    i = !1;
+    break;
+  }
+  return (!0 === r.default || !1 !== i) && u;
+}
+function preact_router_module_h(n, t) {
+  return n.rank < t.rank ? 1 : n.rank > t.rank ? -1 : n.index - t.index;
+}
+function preact_router_module_v(n, t) {
+  return n.index = t, n.rank = function (n) {
+    return n.props.default ? 0 : preact_router_module_d(n.props.path).map(preact_router_module_l).join("");
+  }(n), n.props;
+}
+function preact_router_module_d(n) {
+  return n.replace(/(^\/+|\/+$)/g, "").split("/");
+}
+function preact_router_module_l(n) {
+  return ":" == n.charAt(0) ? 1 + "*+?".indexOf(n.charAt(n.length - 1)) || 4 : 5;
+}
+var preact_router_module_p = {},
+  preact_router_module_m = [],
+  preact_router_module_y = [],
+  preact_router_module_U = null,
+  preact_router_module_g = {
+    url: R()
+  },
+  preact_router_module_k = Object(external_preact_["createContext"])(preact_router_module_g);
+function C() {
+  var n = hooks_module_q(preact_router_module_k);
+  if (n === preact_router_module_g) {
+    var t = hooks_module_h()[1];
+    p(function () {
+      return preact_router_module_y.push(t), function () {
+        return preact_router_module_y.splice(preact_router_module_y.indexOf(t), 1);
+      };
+    }, []);
+  }
+  return [n, $];
+}
+function R() {
+  var n;
+  return "" + ((n = preact_router_module_U && preact_router_module_U.location ? preact_router_module_U.location : preact_router_module_U && preact_router_module_U.getCurrentLocation ? preact_router_module_U.getCurrentLocation() : "undefined" != typeof location ? location : preact_router_module_p).pathname || "") + (n.search || "");
+}
+function $(n, t) {
+  return void 0 === t && (t = !1), "string" != typeof n && n.url && (t = n.replace, n = n.url), function (n) {
+    for (var t = preact_router_module_m.length; t--;) if (preact_router_module_m[t].canRoute(n)) return !0;
+    return !1;
+  }(n) && function (n, t) {
+    void 0 === t && (t = "push"), preact_router_module_U && preact_router_module_U[t] ? preact_router_module_U[t](n) : "undefined" != typeof history && history[t + "State"] && history[t + "State"](null, null, n);
+  }(n, t ? "replace" : "push"), I(n);
+}
+function I(n) {
+  for (var t = !1, r = 0; r < preact_router_module_m.length; r++) preact_router_module_m[r].routeTo(n) && (t = !0);
+  return t;
+}
+function M(n) {
+  if (n && n.getAttribute) {
+    var t = n.getAttribute("href"),
+      r = n.getAttribute("target");
+    if (t && t.match(/^\//g) && (!r || r.match(/^_?self$/i))) return $(t);
+  }
+}
+function preact_router_module_b(n) {
+  return n.stopImmediatePropagation && n.stopImmediatePropagation(), n.stopPropagation && n.stopPropagation(), n.preventDefault(), !1;
+}
+function W(n) {
+  if (!(n.ctrlKey || n.metaKey || n.altKey || n.shiftKey || n.button)) {
+    var t = n.target;
+    do {
+      if ("a" === t.localName && t.getAttribute("href")) {
+        if (t.hasAttribute("data-native") || t.hasAttribute("native")) return;
+        if (M(t)) return preact_router_module_b(n);
+      }
+    } while (t = t.parentNode);
+  }
+}
+var preact_router_module_w = !1;
+function D(n) {
+  n.history && (preact_router_module_U = n.history), this.state = {
+    url: n.url || R()
+  };
+}
+preact_router_module_c(D.prototype = new external_preact_["Component"](), {
+  shouldComponentUpdate: function shouldComponentUpdate(n) {
+    return !0 !== n.static || n.url !== this.props.url || n.onChange !== this.props.onChange;
+  },
+  canRoute: function canRoute(n) {
+    var t = Object(external_preact_["toChildArray"])(this.props.children);
+    return void 0 !== this.g(t, n);
+  },
+  routeTo: function routeTo(n) {
+    this.setState({
+      url: n
+    });
+    var t = this.canRoute(n);
+    return this.p || this.forceUpdate(), t;
+  },
+  componentWillMount: function componentWillMount() {
+    this.p = !0;
+  },
+  componentDidMount: function componentDidMount() {
+    var n = this;
+    preact_router_module_w || (preact_router_module_w = !0, preact_router_module_U || addEventListener("popstate", function () {
+      I(R());
+    }), addEventListener("click", W)), preact_router_module_m.push(this), preact_router_module_U && (this.u = preact_router_module_U.listen(function (t) {
+      var r = t.location || t;
+      n.routeTo("" + (r.pathname || "") + (r.search || ""));
+    })), this.p = !1;
+  },
+  componentWillUnmount: function componentWillUnmount() {
+    "function" == typeof this.u && this.u(), preact_router_module_m.splice(preact_router_module_m.indexOf(this), 1);
+  },
+  componentWillUpdate: function componentWillUpdate() {
+    this.p = !0;
+  },
+  componentDidUpdate: function componentDidUpdate() {
+    this.p = !1;
+  },
+  g: function g(n, t) {
+    n = n.filter(preact_router_module_v).sort(preact_router_module_h);
+    for (var r = 0; r < n.length; r++) {
+      var i = n[r],
+        o = preact_router_module_s(t, i.props.path, i.props);
+      if (o) return [i, o];
+    }
+  },
+  render: function render(n, t) {
+    var e,
+      u,
+      f = n.onChange,
+      a = t.url,
+      s = this.c,
+      h = this.g(Object(external_preact_["toChildArray"])(n.children), a);
+    if (h && (u = Object(external_preact_["cloneElement"])(h[0], preact_router_module_c(preact_router_module_c({
+      url: a,
+      matches: e = h[1]
+    }, e), {
+      key: void 0,
+      ref: void 0
+    }))), a !== (s && s.url)) {
+      preact_router_module_c(preact_router_module_g, s = this.c = {
+        url: a,
+        previous: s && s.url,
+        current: u,
+        path: u ? u.props.path : null,
+        matches: e
+      }), s.router = this, s.active = u ? [u] : [];
+      for (var v = preact_router_module_y.length; v--;) preact_router_module_y[v]({});
+      "function" == typeof f && f(s);
+    }
+    return Object(external_preact_["h"])(preact_router_module_k.Provider, {
+      value: s
+    }, u);
+  }
+});
+var preact_router_module_E = function E(n) {
+    return Object(external_preact_["h"])("a", preact_router_module_c({
+      onClick: W
+    }, n));
+  },
+  preact_router_module_L = function L(n) {
+    return Object(external_preact_["h"])(n.component, n);
+  };
+
+// CONCATENATED MODULE: ./components/header/style.css
+// extracted by mini-css-extract-plugin
+/* harmony default export */ var style = ({"header":"header__OVZyn","header_fixed":"header_fixed__e+u-O","header_hidden":"header_hidden__HZ-RF","title":"title__I4umU","subtitle":"subtitle__0gF3H"});
+// CONCATENATED MODULE: ./components/header/index.tsx
+
+
+
+var header_Header = function Header(_ref) {
+  var ariaHidden = _ref.ariaHidden;
+  return Object(external_preact_["h"])("header", {
+    "aria-hidden": !!ariaHidden,
+    class: "".concat(style.header, " ").concat(ariaHidden ? style.header_hidden : style.header_fixed)
+  }, Object(external_preact_["h"])("h1", {
+    class: style.title
+  }, "Akifumi Akazawa(Tomiyama)"), Object(external_preact_["h"])("p", {
+    class: style.subtitle
+  }, "Software Engineer skilled in Web Application and Data Engineering."), Object(external_preact_["h"])("nav", null, Object(external_preact_["h"])("ul", null, Object(external_preact_["h"])("li", null, Object(external_preact_["h"])(preact_router_module_E, {
+    class: "fa-solid fa-file",
+    href: "/assets/akifumi_akazawa_resume_en.pdf",
+    target: "_blank",
+    rel: "noopener noreferrer"
+  }, Object(external_preact_["h"])("span", {
+    class: style.label
+  }, "Resume(en)"))), Object(external_preact_["h"])("li", null, Object(external_preact_["h"])(preact_router_module_E, {
+    class: "fa-solid fa-file",
+    href: "/assets/akifumi_akazawa_resume_ja.pdf",
+    target: "_blank",
+    rel: "noopener noreferrer"
+  }, Object(external_preact_["h"])("span", {
+    class: style.label
+  }, "Resume(ja)"))), Object(external_preact_["h"])("li", null, Object(external_preact_["h"])("a", {
+    class: "fa-brands fa-github",
+    href: "https://github.com/atomiyama"
+  }, Object(external_preact_["h"])("span", {
+    class: style.label
+  }, "GitHub"))), Object(external_preact_["h"])("li", null, Object(external_preact_["h"])("a", {
+    class: "fa-brands fa-twitter",
+    href: "https://twitter.com/atomiyama1216"
+  }, Object(external_preact_["h"])("span", {
+    class: style.label
+  }, "Twitter"))), Object(external_preact_["h"])("li", null, Object(external_preact_["h"])("a", {
+    class: "fa-brands fa-linkedin",
+    href: "https://linkedin.com/in/atomiyama1216"
+  }, Object(external_preact_["h"])("span", {
+    class: style.label
+  }, "LinkedIn"))), Object(external_preact_["h"])("li", null, Object(external_preact_["h"])("a", {
+    class: "fa-brands fa-facebook",
+    href: "https://www.facebook.com/atomiyama1216"
+  }, Object(external_preact_["h"])("span", {
+    class: style.label
+  }, "Facebook"))), Object(external_preact_["h"])("li", null, Object(external_preact_["h"])("a", {
+    class: "fa-regular fa-envelope",
+    href: "mailto:tomisuker16@gmail.com"
+  }, Object(external_preact_["h"])("span", {
+    class: style.label
+  }, "Email"))))), Object(external_preact_["h"])("hr", null));
+};
+// EXTERNAL MODULE: ../node_modules/@preact/prerender-data-provider/src/context.js
+var context = __webpack_require__("/3MO");
+
+// EXTERNAL MODULE: ../node_modules/@preact/prerender-data-provider/src/render-prop.js
+var render_prop = __webpack_require__("MFe8");
+
 // EXTERNAL MODULE: ../node_modules/@preact/prerender-data-provider/src/utils.js
 var utils = __webpack_require__("qQTh");
 
@@ -851,7 +733,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 function usePrerenderData(props) {
   var doAutomaticFetch = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
   var value;
-  var _useState = h({
+  var _useState = hooks_module_h({
       value: value,
       isLoading: false,
       error: false
@@ -937,11 +819,11 @@ var useCmd_useCmd = function useCmd() {
   });
 
   // To restore history when user presses up/down arrow keys
-  var _useState = h([]),
+  var _useState = hooks_module_h([]),
     _useState2 = useCmd_slicedToArray(_useState, 2),
     results = _useState2[0],
     setResults = _useState2[1];
-  var _useState3 = h(0),
+  var _useState3 = hooks_module_h(0),
     _useState4 = useCmd_slicedToArray(_useState3, 2),
     historyIndex = _useState4[0],
     setHistoryIndex = _useState4[1];
@@ -1255,7 +1137,7 @@ var terminal_Terminal = function Terminal() {
     class: terminal_style.terminal
   }, Object(external_preact_["h"])("div", {
     class: terminal_style.welcome
-  }, Object(external_preact_["h"])("p", null, "Hello, there!"), Object(external_preact_["h"])("p", null, "Welcome to atomiyama's CLI resume."), Object(external_preact_["h"])("p", null, "Type \"help\" to see the list of available commands.")), commandProps.map(function (props, i) {
+  }, Object(external_preact_["h"])("p", null, "Hello, there!"), Object(external_preact_["h"])("p", null, "Type \"help\" to see the list of available commands.")), commandProps.map(function (props, i) {
     return Object(external_preact_["h"])(external_preact_["Fragment"], {
       key: "history_".concat(i)
     }, Object(external_preact_["h"])(cmd_Cmd, props));
@@ -1305,16 +1187,16 @@ function compat_module_typeof(obj) { "@babel/helpers - typeof"; return compat_mo
 
 
 
-function compat_module_g(n, t) {
+function S(n, t) {
   for (var e in t) n[e] = t[e];
   return n;
 }
-function C(n, t) {
+function compat_module_C(n, t) {
   for (var e in n) if ("__source" !== e && !(e in t)) return !0;
   for (var r in t) if ("__source" !== r && n[r] !== t[r]) return !0;
   return !1;
 }
-function E(n, t) {
+function compat_module_E(n, t) {
   return n === t && (0 !== n || 1 / n == 1 / t) || n != n && t != t;
 }
 function compat_module_w(n) {
@@ -1324,7 +1206,7 @@ function compat_module_x(n, e) {
   function r(n) {
     var t = this.props.ref,
       r = t == n.ref;
-    return !r && t && (t.call ? t(null) : t.current = null), e ? !e(this.props, n) || !r : C(this.props, n);
+    return !r && t && (t.call ? t(null) : t.current = null), e ? !e(this.props, n) || !r : compat_module_C(this.props, n);
   }
   function u(e) {
     return this.shouldComponentUpdate = r, Object(external_preact_["createElement"])(n, e);
@@ -1332,16 +1214,16 @@ function compat_module_x(n, e) {
   return u.displayName = "Memo(" + (n.displayName || n.name) + ")", u.prototype.isReactComponent = !0, u.__f = !0, u;
 }
 (compat_module_w.prototype = new external_preact_["Component"]()).isPureReactComponent = !0, compat_module_w.prototype.shouldComponentUpdate = function (n, t) {
-  return C(this.props, n) || C(this.state, t);
+  return compat_module_C(this.props, n) || compat_module_C(this.state, t);
 };
-var R = external_preact_["options"].__b;
+var compat_module_R = external_preact_["options"].__b;
 external_preact_["options"].__b = function (n) {
-  n.type && n.type.__f && n.ref && (n.props.ref = n.ref, n.ref = null), R && R(n);
+  n.type && n.type.__f && n.ref && (n.props.ref = n.ref, n.ref = null), compat_module_R && compat_module_R(n);
 };
 var N = "undefined" != typeof Symbol && Symbol.for && Symbol.for("react.forward_ref") || 3911;
 function compat_module_k(n) {
   function t(t) {
-    var e = compat_module_g({}, t);
+    var e = S({}, t);
     return delete e.ref, n(e, t.ref || null);
   }
   return t.$$typeof = N, t.render = t, t.prototype.isReactComponent = t.__f = !0, t.displayName = "ForwardRef(" + (n.displayName || n.name) + ")", t;
@@ -1367,27 +1249,27 @@ external_preact_["options"].__e = function (n, t, e, r) {
   if (n.then) for (var u, o = t; o = o.__;) if ((u = o.__c) && u.__c) return null == t.__e && (t.__e = e.__e, t.__k = e.__k), u.__c(n, t);
   compat_module_T(n, t, e, r);
 };
-var I = external_preact_["options"].unmount;
-function L(n, t, e) {
+var compat_module_I = external_preact_["options"].unmount;
+function compat_module_L(n, t, e) {
   return n && (n.__c && n.__c.__H && (n.__c.__H.__.forEach(function (n) {
     "function" == typeof n.__c && n.__c();
-  }), n.__c.__H = null), null != (n = compat_module_g({}, n)).__c && (n.__c.__P === e && (n.__c.__P = t), n.__c = null), n.__k = n.__k && n.__k.map(function (n) {
-    return L(n, t, e);
+  }), n.__c.__H = null), null != (n = S({}, n)).__c && (n.__c.__P === e && (n.__c.__P = t), n.__c = null), n.__k = n.__k && n.__k.map(function (n) {
+    return compat_module_L(n, t, e);
   })), n;
 }
-function compat_module_U(n, t, e) {
+function compat_module_P(n, t, e) {
   return n && (n.__v = null, n.__k = n.__k && n.__k.map(function (n) {
-    return compat_module_U(n, t, e);
+    return compat_module_P(n, t, e);
   }), n.__c && n.__c.__P === t && (n.__e && e.insertBefore(n.__e, n.__d), n.__c.__e = !0, n.__c.__P = e)), n;
 }
-function D() {
+function compat_module_U() {
   this.__u = 0, this.t = null, this.__b = null;
 }
-function compat_module_F(n) {
+function compat_module_D(n) {
   var t = n.__.__c;
   return t && t.__a && t.__a(n);
 }
-function M(n) {
+function compat_module_F(n) {
   var e, r, u;
   function o(o) {
     if (e || (e = n()).then(function (n) {
@@ -1400,17 +1282,17 @@ function M(n) {
   }
   return o.displayName = "Lazy", o.__f = !0, o;
 }
-function compat_module_V() {
+function compat_module_M() {
   this.u = null, this.o = null;
 }
 external_preact_["options"].unmount = function (n) {
   var t = n.__c;
-  t && t.__R && t.__R(), t && !0 === n.__h && (n.type = null), I && I(n);
-}, (D.prototype = new external_preact_["Component"]()).__c = function (n, t) {
+  t && t.__R && t.__R(), t && !0 === n.__h && (n.type = null), compat_module_I && compat_module_I(n);
+}, (compat_module_U.prototype = new external_preact_["Component"]()).__c = function (n, t) {
   var e = t.__c,
     r = this;
   null == r.t && (r.t = []), r.t.push(e);
-  var u = compat_module_F(r.__v),
+  var u = compat_module_D(r.__v),
     o = !1,
     i = function i() {
       o || (o = !0, e.__R = null, u ? u(l) : l());
@@ -1420,7 +1302,7 @@ external_preact_["options"].unmount = function (n) {
       if (! --r.__u) {
         if (r.state.__a) {
           var n = r.state.__a;
-          r.__v.__k[0] = compat_module_U(n, n.__c.__P, n.__c.__O);
+          r.__v.__k[0] = compat_module_P(n, n.__c.__P, n.__c.__O);
         }
         var t;
         for (r.setState({
@@ -1432,28 +1314,28 @@ external_preact_["options"].unmount = function (n) {
   r.__u++ || c || r.setState({
     __a: r.__b = r.__v.__k[0]
   }), n.then(i, i);
-}, D.prototype.componentWillUnmount = function () {
+}, compat_module_U.prototype.componentWillUnmount = function () {
   this.t = [];
-}, D.prototype.render = function (n, e) {
+}, compat_module_U.prototype.render = function (n, e) {
   if (this.__b) {
     if (this.__v.__k) {
       var r = document.createElement("div"),
         o = this.__v.__k[0].__c;
-      this.__v.__k[0] = L(this.__b, r, o.__O = o.__P);
+      this.__v.__k[0] = compat_module_L(this.__b, r, o.__O = o.__P);
     }
     this.__b = null;
   }
   var i = e.__a && Object(external_preact_["createElement"])(external_preact_["Fragment"], null, n.fallback);
   return i && (i.__h = null), [Object(external_preact_["createElement"])(external_preact_["Fragment"], null, e.__a ? null : n.children), i];
 };
-var W = function W(n, t, e) {
+var compat_module_V = function V(n, t, e) {
   if (++e[1] === e[0] && n.o.delete(t), n.props.revealOrder && ("t" !== n.props.revealOrder[0] || !n.o.size)) for (e = n.u; e;) {
     for (; e.length > 3;) e.pop()();
     if (e[1] < e[0]) break;
     n.u = e = e[2];
   }
 };
-function compat_module_P(n) {
+function compat_module_W(n) {
   return this.getChildContext = function () {
     return n.context;
   }, n.children;
@@ -1476,7 +1358,7 @@ function compat_module_j(n) {
     removeChild: function removeChild(n) {
       this.childNodes.splice(this.childNodes.indexOf(n) >>> 1, 1), e.i.removeChild(n);
     }
-  }), Object(external_preact_["render"])(Object(external_preact_["createElement"])(compat_module_P, {
+  }), Object(external_preact_["render"])(Object(external_preact_["createElement"])(compat_module_W, {
     context: e.context
   }, n.__v), e.l)) : e.l && e.componentWillUnmount();
 }
@@ -1487,33 +1369,33 @@ function compat_module_z(n, e) {
   });
   return r.containerInfo = e, r;
 }
-(compat_module_V.prototype = new external_preact_["Component"]()).__a = function (n) {
+(compat_module_M.prototype = new external_preact_["Component"]()).__a = function (n) {
   var t = this,
-    e = compat_module_F(t.__v),
+    e = compat_module_D(t.__v),
     r = t.o.get(n);
   return r[0]++, function (u) {
     var o = function o() {
-      t.props.revealOrder ? (r.push(u), W(t, n, r)) : u();
+      t.props.revealOrder ? (r.push(u), compat_module_V(t, n, r)) : u();
     };
     e ? e(o) : o();
   };
-}, compat_module_V.prototype.render = function (n) {
+}, compat_module_M.prototype.render = function (n) {
   this.u = null, this.o = new Map();
   var t = Object(external_preact_["toChildArray"])(n.children);
   n.revealOrder && "b" === n.revealOrder[0] && t.reverse();
   for (var e = t.length; e--;) this.o.set(t[e], this.u = [1, 0, this.u]);
   return n.children;
-}, compat_module_V.prototype.componentDidUpdate = compat_module_V.prototype.componentDidMount = function () {
+}, compat_module_M.prototype.componentDidUpdate = compat_module_M.prototype.componentDidMount = function () {
   var n = this;
   this.o.forEach(function (t, e) {
-    W(n, e, t);
+    compat_module_V(n, e, t);
   });
 };
 var compat_module_B = "undefined" != typeof Symbol && Symbol.for && Symbol.for("react.element") || 60103,
-  compat_module_H = /^(?:accent|alignment|arabic|baseline|cap|clip(?!PathU)|color|dominant|fill|flood|font|glyph(?!R)|horiz|image|letter|lighting|marker(?!H|W|U)|overline|paint|pointer|shape|stop|strikethrough|stroke|text(?!L)|transform|underline|unicode|units|v|vector|vert|word|writing|x(?!C))[A-Z]/,
+  compat_module_H = /^(?:accent|alignment|arabic|baseline|cap|clip(?!PathU)|color|dominant|fill|flood|font|glyph(?!R)|horiz|image(!S)|letter|lighting|marker(?!H|W|U)|overline|paint|pointer|shape|stop|strikethrough|stroke|text(?!L)|transform|underline|unicode|units|v|vector|vert|word|writing|x(?!C))[A-Z]/,
   Z = /^on(Ani|Tra|Tou|BeforeInp|Compo)/,
   Y = /[A-Z0-9]/g,
-  $ = "undefined" != typeof document,
+  compat_module_$ = "undefined" != typeof document,
   compat_module_q = function q(n) {
     return ("undefined" != typeof Symbol && "symbol" == compat_module_typeof(Symbol()) ? /fil|che|rad/ : /fil|che|ra/).test(n);
   };
@@ -1547,7 +1429,18 @@ function nn() {
   return this.defaultPrevented;
 }
 external_preact_["options"].event = function (n) {
-  return K && (n = K(n)), n.persist = Q, n.isPropagationStopped = X, n.isDefaultPrevented = nn, n.nativeEvent = n;
+  K && (n = K(n));
+  var t = n.currentTarget,
+    e = n.type;
+  return "input" !== e && "change" !== e || !t.h || Promise.resolve().then(function () {
+    return function (n, t) {
+      null != t.value && Promise.resolve().then(function () {
+        return t.value = t.v;
+      }), "change" === n && null != t.checked && Promise.resolve().then(function () {
+        return t.checked = t.v;
+      });
+    }(e, t);
+  }), n.persist = Q, n.isPropagationStopped = X, n.isDefaultPrevented = nn, n.nativeEvent = n;
 };
 var compat_module_tn,
   compat_module_en = {
@@ -1565,7 +1458,7 @@ external_preact_["options"].vnode = function (n) {
       u = {};
     for (var o in t) {
       var i = t[o];
-      if (!("value" === o && "defaultValue" in t && null == i || $ && "children" === o && "noscript" === e || "class" === o || "className" === o)) {
+      if (!("value" === o && "defaultValue" in t && null == i || compat_module_$ && "children" === o && "noscript" === e || "class" === o || "className" === o)) {
         var l = o.toLowerCase();
         "defaultValue" === o && "value" in t && null == t.value ? o = "value" : "download" === o && !0 === i ? i = "" : "ondoubleclick" === l ? o = "ondblclick" : "onchange" !== l || "input" !== e && "textarea" !== e || compat_module_q(t.type) ? "onfocus" === l ? o = "onfocusin" : "onblur" === l ? o = "onfocusout" : Z.test(o) ? o = l : -1 === e.indexOf("-") && compat_module_H.test(o) ? o = o.replace(Y, "-$&").toLowerCase() : null === i && (i = void 0) : l = o = "oninput", "oninput" === l && u[o = l] && (o = "oninputCapture"), u[o] = i;
       }
@@ -1584,9 +1477,11 @@ external_preact_["options"].__r = function (n) {
 var compat_module_on = external_preact_["options"].diffed;
 external_preact_["options"].diffed = function (n) {
   compat_module_on && compat_module_on(n);
-  var t = n.props,
-    e = n.__e;
-  null != e && "textarea" === n.type && "value" in t && t.value !== e.value && (e.value = null == t.value ? "" : t.value), compat_module_tn = null;
+  var t = n.type,
+    e = n.props,
+    r = n.__e,
+    u = r && r.h;
+  null == r || "input" !== t && "textarea" !== t && "select" !== t || !1 === u || (u || e.oninput || e.onchange || e.onChange) && (null != e.value ? (r.h = !0, r.v = e.value) : null != e.checked ? (r.h = !0, r.v = e.checked) : r.h = !1), null != r && "textarea" === n.type && "value" in e && e.value !== r.value && (r.value = null == e.value ? "" : e.value), compat_module_tn = null;
 };
 var ln = {
     ReactCurrentDispatcher: {
@@ -1629,41 +1524,41 @@ function _n(n) {
 function bn() {
   return [!1, yn];
 }
-var Sn = y;
-function gn(n, t) {
+var gn = y;
+function Sn(n, t) {
   var e = t(),
-    r = h({
-      h: {
+    r = hooks_module_h({
+      p: {
         __: e,
-        v: t
+        m: t
       }
     }),
-    u = r[0].h,
+    u = r[0].p,
     o = r[1];
   return y(function () {
-    u.__ = e, u.v = t, E(u.__, t()) || o({
-      h: u
+    u.__ = e, u.m = t, compat_module_E(u.__, t()) || o({
+      p: u
     });
   }, [n, e, t]), p(function () {
-    return E(u.__, u.v()) || o({
-      h: u
+    return compat_module_E(u.__, u.m()) || o({
+      p: u
     }), n(function () {
-      E(u.__, u.v()) || o({
-        h: u
+      compat_module_E(u.__, u.m()) || o({
+        p: u
       });
     });
   }, [n]), e;
 }
 var Cn = {
-  useState: h,
+  useState: hooks_module_h,
   useId: V,
-  useReducer: s,
+  useReducer: hooks_module_s,
   useEffect: p,
   useLayoutEffect: y,
-  useInsertionEffect: Sn,
+  useInsertionEffect: gn,
   useTransition: bn,
   useDeferredValue: _n,
-  useSyncExternalStore: gn,
+  useSyncExternalStore: Sn,
   startTransition: yn,
   useRef: hooks_module_,
   useImperativeHandle: hooks_module_A,
@@ -1692,9 +1587,9 @@ var Cn = {
   flushSync: pn,
   unstable_batchedUpdates: dn,
   StrictMode: mn,
-  Suspense: D,
-  SuspenseList: compat_module_V,
-  lazy: M,
+  Suspense: compat_module_U,
+  SuspenseList: compat_module_M,
+  lazy: compat_module_F,
   __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED: ln
 };
 
@@ -1742,7 +1637,7 @@ var index_module_t = ["children", "options"],
   index_module_k = /\f/g,
   index_module_x = /^\s*?\[(x|\s)\]/,
   index_module_b = /^ *(#{1,6}) *([^\n]+?)(?: +#*)?(?:\n *)*(?:\n|$)/,
-  S = /^([^\n]+)\n *(=|-){3,} *(?:\n *)+\n/,
+  index_module_S = /^([^\n]+)\n *(=|-){3,} *(?:\n *)+\n/,
   index_module_$ = /^ *(?!<[a-z][^ >/]* ?\/>)<([a-z][^ >/]*) ?([^>]*)\/{0}>\n?(\s*(?:<\1[^>]*?>[\s\S]*?<\/\1>|(?!<\1)[\s\S])*?)<\/\1>\n*/i,
   index_module_z = /&([a-zA-Z]+);/g,
   index_module_w = /^<!--[\s\S]*?(?:-->)/,
@@ -1848,7 +1743,7 @@ function index_module_hn(n, r) {
 }
 var kn = /^\[([^\]]*)]\( *((?:\([^)]*\)|[^() ])*) *"?([^)"]*)?"?\)/,
   xn = /^!\[([^\]]*)]\( *((?:\([^)]*\)|[^() ])*) *"?([^)"]*)?"?\)/,
-  index_module_bn = [index_module_, index_module_d, index_module_p, index_module_b, S, index_module_w, index_module_R, index_module_pn, index_module_vn, index_module_mn, index_module_yn],
+  index_module_bn = [index_module_, index_module_d, index_module_p, index_module_b, index_module_S, index_module_w, index_module_R, index_module_pn, index_module_vn, index_module_mn, index_module_yn],
   index_module_Sn = [].concat(index_module_bn, [/^[^\n]+(?:  \n|\n{2,})/, index_module_$, index_module_E]);
 function $n(n) {
   return n.replace(/[ÀÁÂÃÄÅàáâãäåæÆ]/g, "a").replace(/[çÇ]/g, "c").replace(/[ðÐ]/g, "d").replace(/[ÈÉÊËéèêë]/g, "e").replace(/[ÏïÎîÍíÌì]/g, "i").replace(/[Ññ]/g, "n").replace(/[øØœŒÕõÔôÓóÒò]/g, "o").replace(/[ÜüÛûÚúÙù]/g, "u").replace(/[ŸÿÝý]/g, "y").replace(/[^a-z0-9- ]/gi, "").replace(/ /gi, "-").toLowerCase();
@@ -2172,7 +2067,7 @@ function Un(t, i) {
         }
       },
       headingSetext: {
-        t: In(S),
+        t: In(index_module_S),
         _: Nn.MAX,
         l: function l(n, r, t) {
           return {
@@ -2611,10 +2506,10 @@ var app_App = function App(props) {
     id: "app"
   }, Object(external_preact_["h"])(header_Header, null), Object(external_preact_["h"])(header_Header, {
     ariaHidden: true
-  }), Object(external_preact_["h"])("main", null, Object(external_preact_["h"])(preact_router_es_Router, null, Object(external_preact_["h"])(preact_router_es_Route, {
+  }), Object(external_preact_["h"])("main", null, Object(external_preact_["h"])(D, null, Object(external_preact_["h"])(preact_router_module_L, {
     path: "/",
     component: home
-  }), Object(external_preact_["h"])(preact_router_es_Route, {
+  }), Object(external_preact_["h"])(preact_router_module_L, {
     path: "/posts/:post_id*",
     component: post
   })))));

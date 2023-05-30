@@ -17,7 +17,6 @@ export const Terminal = () => {
     <div class={style.terminal}>
       <div class={style.welcome}>
         <p>Hello, there!</p>
-        <p>Welcome to atomiyama's CLI resume.</p>
         <p>Type "help" to see the list of available commands.</p>
       </div>
       {commandProps.map((props, i) => (
