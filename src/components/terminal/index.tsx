@@ -2,6 +2,7 @@ import { h, Fragment } from 'preact';
 import style from "./style.css";
 import { useCmd } from './cmd/useCmd';
 import { Cmd } from './cmd';
+import ReactGA from 'react-ga4';
 
 export const PROMPT = "guest@atomiyama.dev:~$"
 
@@ -32,6 +33,7 @@ const Prompt = ({ handleExecCmd, formRef, inputRef }) => {
 		e.preventDefault()
 		const input = e.target.command.value;
 		handleExecCmd(input);
+		ReactGA.event("submit_form", { input })
 		// reset input field
 		e.target.command.value = '';
 	}

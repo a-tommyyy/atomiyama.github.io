@@ -100,6 +100,125 @@ var PrerenderDataContext = Object(preact__WEBPACK_IMPORTED_MODULE_0__["createCon
 
 /***/ }),
 
+/***/ "/CiD":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function _typeof(obj) {
+  "@babel/helpers - typeof";
+
+  return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) {
+    return typeof obj;
+  } : function (obj) {
+    return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+  }, _typeof(obj);
+}
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = exports.ReactGAImplementation = void 0;
+var _ga = _interopRequireWildcard(__webpack_require__("s0TJ"));
+function _getRequireWildcardCache(nodeInterop) {
+  if (typeof WeakMap !== "function") return null;
+  var cacheBabelInterop = new WeakMap();
+  var cacheNodeInterop = new WeakMap();
+  return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) {
+    return nodeInterop ? cacheNodeInterop : cacheBabelInterop;
+  })(nodeInterop);
+}
+function _interopRequireWildcard(obj, nodeInterop) {
+  if (!nodeInterop && obj && obj.__esModule) {
+    return obj;
+  }
+  if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") {
+    return {
+      "default": obj
+    };
+  }
+  var cache = _getRequireWildcardCache(nodeInterop);
+  if (cache && cache.has(obj)) {
+    return cache.get(obj);
+  }
+  var newObj = {};
+  var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;
+  for (var key in obj) {
+    if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) {
+      var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;
+      if (desc && (desc.get || desc.set)) {
+        Object.defineProperty(newObj, key, desc);
+      } else {
+        newObj[key] = obj[key];
+      }
+    }
+  }
+  newObj["default"] = obj;
+  if (cache) {
+    cache.set(obj, newObj);
+  }
+  return newObj;
+}
+var ReactGAImplementation = _ga.GA4;
+exports.ReactGAImplementation = ReactGAImplementation;
+var _default = _ga["default"];
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "0uLP":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = format;
+var smallWords = /^(a|an|and|as|at|but|by|en|for|if|in|nor|of|on|or|per|the|to|vs?\.?|via)$/i;
+function toTitleCase(string) {
+  return string.toString().trim().replace(/[A-Za-z0-9\u00C0-\u00FF]+[^\s-]*/g, function (match, index, title) {
+    if (index > 0 && index + match.length !== title.length && match.search(smallWords) > -1 && title.charAt(index - 2) !== ":" && (title.charAt(index + match.length) !== "-" || title.charAt(index - 1) === "-") && title.charAt(index - 1).search(/[^\s-]/) < 0) {
+      return match.toLowerCase();
+    }
+    if (match.substr(1).search(/[A-Z]|\../) > -1) {
+      return match;
+    }
+    return match.charAt(0).toUpperCase() + match.substr(1);
+  });
+}
+
+// See if s could be an email address. We don't want to send personal data like email.
+// https://support.google.com/analytics/answer/2795983?hl=en
+function mightBeEmail(s) {
+  // There's no point trying to validate rfc822 fully, just look for ...@...
+  return typeof s === "string" && s.indexOf("@") !== -1;
+}
+var redacted = "REDACTED (Potential Email Address)";
+function redactEmail(string) {
+  if (mightBeEmail(string)) {
+    console.warn("This arg looks like an email address, redacting.");
+    return redacted;
+  }
+  return string;
+}
+function format() {
+  var s = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "";
+  var titleCase = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+  var redactingEmail = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
+  var _str = s || "";
+  if (titleCase) {
+    _str = toTitleCase(s);
+  }
+  if (redactingEmail) {
+    _str = redactEmail(_str);
+  }
+  return _str;
+}
+
+/***/ }),
+
 /***/ "HteQ":
 /***/ (function(module, exports) {
 
@@ -257,6 +376,393 @@ __webpack_require__.r(__webpack_exports__);
 // EXTERNAL MODULE: external "preact"
 var external_preact_ = __webpack_require__("HteQ");
 
+// CONCATENATED MODULE: ../node_modules/preact-router/dist/preact-router.es.js
+
+var EMPTY$1 = {};
+function preact_router_es_assign(obj, props) {
+  // eslint-disable-next-line guard-for-in
+  for (var i in props) {
+    obj[i] = props[i];
+  }
+  return obj;
+}
+function exec(url, route, opts) {
+  var reg = /(?:\?([^#]*))?(#.*)?$/,
+    c = url.match(reg),
+    matches = {},
+    ret;
+  if (c && c[1]) {
+    var p = c[1].split('&');
+    for (var i = 0; i < p.length; i++) {
+      var r = p[i].split('=');
+      matches[decodeURIComponent(r[0])] = decodeURIComponent(r.slice(1).join('='));
+    }
+  }
+  url = segmentize(url.replace(reg, ''));
+  route = segmentize(route || '');
+  var max = Math.max(url.length, route.length);
+  for (var i$1 = 0; i$1 < max; i$1++) {
+    if (route[i$1] && route[i$1].charAt(0) === ':') {
+      var param = route[i$1].replace(/(^:|[+*?]+$)/g, ''),
+        flags = (route[i$1].match(/[+*?]+$/) || EMPTY$1)[0] || '',
+        plus = ~flags.indexOf('+'),
+        star = ~flags.indexOf('*'),
+        val = url[i$1] || '';
+      if (!val && !star && (flags.indexOf('?') < 0 || plus)) {
+        ret = false;
+        break;
+      }
+      matches[param] = decodeURIComponent(val);
+      if (plus || star) {
+        matches[param] = url.slice(i$1).map(decodeURIComponent).join('/');
+        break;
+      }
+    } else if (route[i$1] !== url[i$1]) {
+      ret = false;
+      break;
+    }
+  }
+  if (opts.default !== true && ret === false) {
+    return false;
+  }
+  return matches;
+}
+function pathRankSort(a, b) {
+  return a.rank < b.rank ? 1 : a.rank > b.rank ? -1 : a.index - b.index;
+}
+
+// filter out VNodes without attributes (which are unrankeable), and add `index`/`rank` properties to be used in sorting.
+function prepareVNodeForRanking(vnode, index) {
+  vnode.index = index;
+  vnode.rank = rankChild(vnode);
+  return vnode.props;
+}
+function segmentize(url) {
+  return url.replace(/(^\/+|\/+$)/g, '').split('/');
+}
+function rankSegment(segment) {
+  return segment.charAt(0) == ':' ? 1 + '*+?'.indexOf(segment.charAt(segment.length - 1)) || 4 : 5;
+}
+function rank(path) {
+  return segmentize(path).map(rankSegment).join('');
+}
+function rankChild(vnode) {
+  return vnode.props.default ? 0 : rank(vnode.props.path);
+}
+var customHistory = null;
+var ROUTERS = [];
+var subscribers = [];
+var EMPTY = {};
+function setUrl(url, type) {
+  if (type === void 0) type = 'push';
+  if (customHistory && customHistory[type]) {
+    customHistory[type](url);
+  } else if (typeof history !== 'undefined' && history[type + 'State']) {
+    history[type + 'State'](null, null, url);
+  }
+}
+function getCurrentUrl() {
+  var url;
+  if (customHistory && customHistory.location) {
+    url = customHistory.location;
+  } else if (customHistory && customHistory.getCurrentLocation) {
+    url = customHistory.getCurrentLocation();
+  } else {
+    url = typeof location !== 'undefined' ? location : EMPTY;
+  }
+  return "" + (url.pathname || '') + (url.search || '');
+}
+function route(url, replace) {
+  if (replace === void 0) replace = false;
+  if (typeof url !== 'string' && url.url) {
+    replace = url.replace;
+    url = url.url;
+  }
+
+  // only push URL into history if we can handle it
+  if (preact_router_es_canRoute(url)) {
+    setUrl(url, replace ? 'replace' : 'push');
+  }
+  return routeTo(url);
+}
+
+/** Check if the given URL can be handled by any router instances. */
+function preact_router_es_canRoute(url) {
+  for (var i = ROUTERS.length; i--;) {
+    if (ROUTERS[i].canRoute(url)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+/** Tell all router instances to handle the given URL.  */
+function routeTo(url) {
+  var didRoute = false;
+  for (var i = 0; i < ROUTERS.length; i++) {
+    if (ROUTERS[i].routeTo(url) === true) {
+      didRoute = true;
+    }
+  }
+  for (var i$1 = subscribers.length; i$1--;) {
+    subscribers[i$1](url);
+  }
+  return didRoute;
+}
+function routeFromLink(node) {
+  // only valid elements
+  if (!node || !node.getAttribute) {
+    return;
+  }
+  var href = node.getAttribute('href'),
+    target = node.getAttribute('target');
+
+  // ignore links with targets and non-path URLs
+  if (!href || !href.match(/^\//g) || target && !target.match(/^_?self$/i)) {
+    return;
+  }
+
+  // attempt to route, if no match simply cede control to browser
+  return route(href);
+}
+function handleLinkClick(e) {
+  if (e.ctrlKey || e.metaKey || e.altKey || e.shiftKey || e.button !== 0) {
+    return;
+  }
+  routeFromLink(e.currentTarget || e.target || this);
+  return prevent(e);
+}
+function prevent(e) {
+  if (e) {
+    if (e.stopImmediatePropagation) {
+      e.stopImmediatePropagation();
+    }
+    if (e.stopPropagation) {
+      e.stopPropagation();
+    }
+    e.preventDefault();
+  }
+  return false;
+}
+function delegateLinkHandler(e) {
+  // ignore events the browser takes care of already:
+  if (e.ctrlKey || e.metaKey || e.altKey || e.shiftKey || e.button !== 0) {
+    return;
+  }
+  var t = e.target;
+  do {
+    if (String(t.nodeName).toUpperCase() === 'A' && t.getAttribute('href')) {
+      if (t.hasAttribute('native')) {
+        return;
+      }
+      // if link is handled by the router, prevent browser defaults
+      if (routeFromLink(t)) {
+        return prevent(e);
+      }
+    }
+  } while (t = t.parentNode);
+}
+var eventListenersInitialized = false;
+function initEventListeners() {
+  if (eventListenersInitialized) {
+    return;
+  }
+  if (typeof addEventListener === 'function') {
+    if (!customHistory) {
+      addEventListener('popstate', function () {
+        routeTo(getCurrentUrl());
+      });
+    }
+    addEventListener('click', delegateLinkHandler);
+  }
+  eventListenersInitialized = true;
+}
+var preact_router_es_Router = function (Component$$1) {
+  function Router(props) {
+    Component$$1.call(this, props);
+    if (props.history) {
+      customHistory = props.history;
+    }
+    this.state = {
+      url: props.url || getCurrentUrl()
+    };
+    initEventListeners();
+  }
+  if (Component$$1) Router.__proto__ = Component$$1;
+  Router.prototype = Object.create(Component$$1 && Component$$1.prototype);
+  Router.prototype.constructor = Router;
+  Router.prototype.shouldComponentUpdate = function shouldComponentUpdate(props) {
+    if (props.static !== true) {
+      return true;
+    }
+    return props.url !== this.props.url || props.onChange !== this.props.onChange;
+  };
+
+  /** Check if the given URL can be matched against any children */
+  Router.prototype.canRoute = function canRoute(url) {
+    var children = Object(external_preact_["toChildArray"])(this.props.children);
+    return this.getMatchingChildren(children, url, false).length > 0;
+  };
+
+  /** Re-render children with a new URL to match against. */
+  Router.prototype.routeTo = function routeTo(url) {
+    this.setState({
+      url: url
+    });
+    var didRoute = this.canRoute(url);
+
+    // trigger a manual re-route if we're not in the middle of an update:
+    if (!this.updating) {
+      this.forceUpdate();
+    }
+    return didRoute;
+  };
+  Router.prototype.componentWillMount = function componentWillMount() {
+    ROUTERS.push(this);
+    this.updating = true;
+  };
+  Router.prototype.componentDidMount = function componentDidMount() {
+    var this$1 = this;
+    if (customHistory) {
+      this.unlisten = customHistory.listen(function (location) {
+        this$1.routeTo("" + (location.pathname || '') + (location.search || ''));
+      });
+    }
+    this.updating = false;
+  };
+  Router.prototype.componentWillUnmount = function componentWillUnmount() {
+    if (typeof this.unlisten === 'function') {
+      this.unlisten();
+    }
+    ROUTERS.splice(ROUTERS.indexOf(this), 1);
+  };
+  Router.prototype.componentWillUpdate = function componentWillUpdate() {
+    this.updating = true;
+  };
+  Router.prototype.componentDidUpdate = function componentDidUpdate() {
+    this.updating = false;
+  };
+  Router.prototype.getMatchingChildren = function getMatchingChildren(children, url, invoke) {
+    return children.filter(prepareVNodeForRanking).sort(pathRankSort).map(function (vnode) {
+      var matches = exec(url, vnode.props.path, vnode.props);
+      if (matches) {
+        if (invoke !== false) {
+          var newProps = {
+            url: url,
+            matches: matches
+          };
+          preact_router_es_assign(newProps, matches);
+          delete newProps.ref;
+          delete newProps.key;
+          return Object(external_preact_["cloneElement"])(vnode, newProps);
+        }
+        return vnode;
+      }
+    }).filter(Boolean);
+  };
+  Router.prototype.render = function render(ref, ref$1) {
+    var children = ref.children;
+    var onChange = ref.onChange;
+    var url = ref$1.url;
+    var active = this.getMatchingChildren(Object(external_preact_["toChildArray"])(children), url, true);
+    var current = active[0] || null;
+    var previous = this.previousUrl;
+    if (url !== previous) {
+      this.previousUrl = url;
+      if (typeof onChange === 'function') {
+        onChange({
+          router: this,
+          url: url,
+          previous: previous,
+          active: active,
+          current: current
+        });
+      }
+    }
+    return current;
+  };
+  return Router;
+}(external_preact_["Component"]);
+var preact_router_es_Link = function Link(props) {
+  return Object(external_preact_["createElement"])('a', preact_router_es_assign({
+    onClick: handleLinkClick
+  }, props));
+};
+var preact_router_es_Route = function Route(props) {
+  return Object(external_preact_["createElement"])(props.component, props);
+};
+preact_router_es_Router.subscribers = subscribers;
+preact_router_es_Router.getCurrentUrl = getCurrentUrl;
+preact_router_es_Router.route = route;
+preact_router_es_Router.Router = preact_router_es_Router;
+preact_router_es_Router.Route = preact_router_es_Route;
+preact_router_es_Router.Link = preact_router_es_Link;
+preact_router_es_Router.exec = exec;
+
+/* harmony default export */ var preact_router_es = (preact_router_es_Router);
+// CONCATENATED MODULE: ./components/header/style.css
+// extracted by mini-css-extract-plugin
+/* harmony default export */ var style = ({"header":"header__OVZyn","header_fixed":"header_fixed__e+u-O","header_hidden":"header_hidden__HZ-RF","title":"title__I4umU","subtitle":"subtitle__0gF3H"});
+// CONCATENATED MODULE: ./components/header/index.tsx
+
+
+
+var header_Header = function Header(_ref) {
+  var ariaHidden = _ref.ariaHidden;
+  return Object(external_preact_["h"])("header", {
+    "aria-hidden": !!ariaHidden,
+    class: "".concat(style.header, " ").concat(ariaHidden ? style.header_hidden : style.header_fixed)
+  }, Object(external_preact_["h"])("h1", {
+    class: style.title
+  }, "Akifumi Akazawa(Tomiyama)"), Object(external_preact_["h"])("p", {
+    class: style.subtitle
+  }, "Software Engineer skilled in Web Application and Data Engineering."), Object(external_preact_["h"])("nav", null, Object(external_preact_["h"])("ul", null, Object(external_preact_["h"])("li", null, Object(external_preact_["h"])(preact_router_es_Link, {
+    class: "fa-solid fa-file",
+    href: "/assets/akifumi_akazawa_resume_en.pdf",
+    target: "_blank",
+    rel: "noopener noreferrer"
+  }, Object(external_preact_["h"])("span", {
+    class: style.label
+  }, "Resume(en)"))), Object(external_preact_["h"])("li", null, Object(external_preact_["h"])(preact_router_es_Link, {
+    class: "fa-solid fa-file",
+    href: "/assets/akifumi_akazawa_resume_ja.pdf",
+    target: "_blank",
+    rel: "noopener noreferrer"
+  }, Object(external_preact_["h"])("span", {
+    class: style.label
+  }, "Resume(ja)"))), Object(external_preact_["h"])("li", null, Object(external_preact_["h"])("a", {
+    class: "fa-brands fa-github",
+    href: "https://github.com/atomiyama"
+  }, Object(external_preact_["h"])("span", {
+    class: style.label
+  }, "GitHub"))), Object(external_preact_["h"])("li", null, Object(external_preact_["h"])("a", {
+    class: "fa-brands fa-twitter",
+    href: "https://twitter.com/atomiyama1216"
+  }, Object(external_preact_["h"])("span", {
+    class: style.label
+  }, "Twitter"))), Object(external_preact_["h"])("li", null, Object(external_preact_["h"])("a", {
+    class: "fa-brands fa-linkedin",
+    href: "https://linkedin.com/in/atomiyama1216"
+  }, Object(external_preact_["h"])("span", {
+    class: style.label
+  }, "LinkedIn"))), Object(external_preact_["h"])("li", null, Object(external_preact_["h"])("a", {
+    class: "fa-brands fa-facebook",
+    href: "https://www.facebook.com/atomiyama1216"
+  }, Object(external_preact_["h"])("span", {
+    class: style.label
+  }, "Facebook"))), Object(external_preact_["h"])("li", null, Object(external_preact_["h"])("a", {
+    class: "fa-regular fa-envelope",
+    href: "mailto:tomisuker16@gmail.com"
+  }, Object(external_preact_["h"])("span", {
+    class: style.label
+  }, "Email"))))), Object(external_preact_["h"])("hr", null));
+};
+// EXTERNAL MODULE: ../node_modules/@preact/prerender-data-provider/src/context.js
+var context = __webpack_require__("/3MO");
+
+// EXTERNAL MODULE: ../node_modules/@preact/prerender-data-provider/src/render-prop.js
+var render_prop = __webpack_require__("MFe8");
+
 // CONCATENATED MODULE: ../node_modules/preact/hooks/dist/hooks.module.js
 
 var hooks_module_t,
@@ -264,11 +770,11 @@ var hooks_module_t,
   hooks_module_u,
   hooks_module_i,
   hooks_module_o = 0,
-  hooks_module_f = [],
+  f = [],
   hooks_module_c = [],
   hooks_module_e = external_preact_["options"].__b,
   hooks_module_a = external_preact_["options"].__r,
-  hooks_module_v = external_preact_["options"].diffed,
+  v = external_preact_["options"].diffed,
   hooks_module_l = external_preact_["options"].__c,
   m = external_preact_["options"].unmount;
 function d(t, u) {
@@ -281,10 +787,10 @@ function d(t, u) {
     __V: hooks_module_c
   }), i.__[t];
 }
-function hooks_module_h(n) {
-  return hooks_module_o = 1, hooks_module_s(B, n);
+function h(n) {
+  return hooks_module_o = 1, s(B, n);
 }
-function hooks_module_s(n, u, i) {
+function s(n, u, i) {
   var o = d(hooks_module_t++, 2);
   if (o.t = n, !o.__c && (o.__ = [i ? i(u) : B(void 0, u), function (n) {
     var t = o.__N ? o.__N[0] : o.__[0],
@@ -363,7 +869,7 @@ function x(t, r) {
 }
 function hooks_module_P(n) {
   var u = d(hooks_module_t++, 10),
-    i = hooks_module_h();
+    i = h();
   return u.__ = n, hooks_module_r.componentDidCatch || (hooks_module_r.componentDidCatch = function (n, t) {
     u.__ && u.__(n, t), i[1](n);
   }), [i[0], function () {
@@ -380,7 +886,7 @@ function V() {
   return n.__;
 }
 function b() {
-  for (var t; t = hooks_module_f.shift();) if (t.__P && t.__H) try {
+  for (var t; t = f.shift();) if (t.__P && t.__H) try {
     t.__H.__h.forEach(k), t.__H.__h.forEach(w), t.__H.__h = [];
   } catch (r) {
     t.__H.__h = [], external_preact_["options"].__e(r, t.__v);
@@ -395,9 +901,9 @@ external_preact_["options"].__b = function (n) {
     n.__N && (n.__ = n.__N), n.__V = hooks_module_c, n.__N = n.i = void 0;
   })) : (i.__h.forEach(k), i.__h.forEach(w), i.__h = [])), hooks_module_u = hooks_module_r;
 }, external_preact_["options"].diffed = function (t) {
-  hooks_module_v && hooks_module_v(t);
+  v && v(t);
   var o = t.__c;
-  o && o.__H && (o.__H.__h.length && (1 !== hooks_module_f.push(o) && hooks_module_i === external_preact_["options"].requestAnimationFrame || ((hooks_module_i = external_preact_["options"].requestAnimationFrame) || j)(b)), o.__H.__.forEach(function (n) {
+  o && o.__H && (o.__H.__h.length && (1 !== f.push(o) && hooks_module_i === external_preact_["options"].requestAnimationFrame || ((hooks_module_i = external_preact_["options"].requestAnimationFrame) || j)(b)), o.__H.__.forEach(function (n) {
     n.i && (n.__H = n.i), n.__V !== hooks_module_c && (n.__ = n.__V), n.i = void 0, n.__V = hooks_module_c;
   })), hooks_module_u = hooks_module_r = null;
 }, external_preact_["options"].__c = function (t, r) {
@@ -451,266 +957,6 @@ function B(n, t) {
   return "function" == typeof t ? t(n) : t;
 }
 
-// CONCATENATED MODULE: ../node_modules/preact-router/dist/preact-router.module.js
-
-
-var preact_router_module_a = {};
-function preact_router_module_c(n, t) {
-  for (var r in t) n[r] = t[r];
-  return n;
-}
-function preact_router_module_s(n, t, r) {
-  var i,
-    o = /(?:\?([^#]*))?(#.*)?$/,
-    e = n.match(o),
-    u = {};
-  if (e && e[1]) for (var f = e[1].split("&"), c = 0; c < f.length; c++) {
-    var s = f[c].split("=");
-    u[decodeURIComponent(s[0])] = decodeURIComponent(s.slice(1).join("="));
-  }
-  n = preact_router_module_d(n.replace(o, "")), t = preact_router_module_d(t || "");
-  for (var h = Math.max(n.length, t.length), v = 0; v < h; v++) if (t[v] && ":" === t[v].charAt(0)) {
-    var l = t[v].replace(/(^:|[+*?]+$)/g, ""),
-      p = (t[v].match(/[+*?]+$/) || preact_router_module_a)[0] || "",
-      m = ~p.indexOf("+"),
-      y = ~p.indexOf("*"),
-      U = n[v] || "";
-    if (!U && !y && (p.indexOf("?") < 0 || m)) {
-      i = !1;
-      break;
-    }
-    if (u[l] = decodeURIComponent(U), m || y) {
-      u[l] = n.slice(v).map(decodeURIComponent).join("/");
-      break;
-    }
-  } else if (t[v] !== n[v]) {
-    i = !1;
-    break;
-  }
-  return (!0 === r.default || !1 !== i) && u;
-}
-function preact_router_module_h(n, t) {
-  return n.rank < t.rank ? 1 : n.rank > t.rank ? -1 : n.index - t.index;
-}
-function preact_router_module_v(n, t) {
-  return n.index = t, n.rank = function (n) {
-    return n.props.default ? 0 : preact_router_module_d(n.props.path).map(preact_router_module_l).join("");
-  }(n), n.props;
-}
-function preact_router_module_d(n) {
-  return n.replace(/(^\/+|\/+$)/g, "").split("/");
-}
-function preact_router_module_l(n) {
-  return ":" == n.charAt(0) ? 1 + "*+?".indexOf(n.charAt(n.length - 1)) || 4 : 5;
-}
-var preact_router_module_p = {},
-  preact_router_module_m = [],
-  preact_router_module_y = [],
-  preact_router_module_U = null,
-  preact_router_module_g = {
-    url: R()
-  },
-  preact_router_module_k = Object(external_preact_["createContext"])(preact_router_module_g);
-function C() {
-  var n = hooks_module_q(preact_router_module_k);
-  if (n === preact_router_module_g) {
-    var t = hooks_module_h()[1];
-    p(function () {
-      return preact_router_module_y.push(t), function () {
-        return preact_router_module_y.splice(preact_router_module_y.indexOf(t), 1);
-      };
-    }, []);
-  }
-  return [n, $];
-}
-function R() {
-  var n;
-  return "" + ((n = preact_router_module_U && preact_router_module_U.location ? preact_router_module_U.location : preact_router_module_U && preact_router_module_U.getCurrentLocation ? preact_router_module_U.getCurrentLocation() : "undefined" != typeof location ? location : preact_router_module_p).pathname || "") + (n.search || "");
-}
-function $(n, t) {
-  return void 0 === t && (t = !1), "string" != typeof n && n.url && (t = n.replace, n = n.url), function (n) {
-    for (var t = preact_router_module_m.length; t--;) if (preact_router_module_m[t].canRoute(n)) return !0;
-    return !1;
-  }(n) && function (n, t) {
-    void 0 === t && (t = "push"), preact_router_module_U && preact_router_module_U[t] ? preact_router_module_U[t](n) : "undefined" != typeof history && history[t + "State"] && history[t + "State"](null, null, n);
-  }(n, t ? "replace" : "push"), I(n);
-}
-function I(n) {
-  for (var t = !1, r = 0; r < preact_router_module_m.length; r++) preact_router_module_m[r].routeTo(n) && (t = !0);
-  return t;
-}
-function M(n) {
-  if (n && n.getAttribute) {
-    var t = n.getAttribute("href"),
-      r = n.getAttribute("target");
-    if (t && t.match(/^\//g) && (!r || r.match(/^_?self$/i))) return $(t);
-  }
-}
-function preact_router_module_b(n) {
-  return n.stopImmediatePropagation && n.stopImmediatePropagation(), n.stopPropagation && n.stopPropagation(), n.preventDefault(), !1;
-}
-function W(n) {
-  if (!(n.ctrlKey || n.metaKey || n.altKey || n.shiftKey || n.button)) {
-    var t = n.target;
-    do {
-      if ("a" === t.localName && t.getAttribute("href")) {
-        if (t.hasAttribute("data-native") || t.hasAttribute("native")) return;
-        if (M(t)) return preact_router_module_b(n);
-      }
-    } while (t = t.parentNode);
-  }
-}
-var preact_router_module_w = !1;
-function D(n) {
-  n.history && (preact_router_module_U = n.history), this.state = {
-    url: n.url || R()
-  };
-}
-preact_router_module_c(D.prototype = new external_preact_["Component"](), {
-  shouldComponentUpdate: function shouldComponentUpdate(n) {
-    return !0 !== n.static || n.url !== this.props.url || n.onChange !== this.props.onChange;
-  },
-  canRoute: function canRoute(n) {
-    var t = Object(external_preact_["toChildArray"])(this.props.children);
-    return void 0 !== this.g(t, n);
-  },
-  routeTo: function routeTo(n) {
-    this.setState({
-      url: n
-    });
-    var t = this.canRoute(n);
-    return this.p || this.forceUpdate(), t;
-  },
-  componentWillMount: function componentWillMount() {
-    this.p = !0;
-  },
-  componentDidMount: function componentDidMount() {
-    var n = this;
-    preact_router_module_w || (preact_router_module_w = !0, preact_router_module_U || addEventListener("popstate", function () {
-      I(R());
-    }), addEventListener("click", W)), preact_router_module_m.push(this), preact_router_module_U && (this.u = preact_router_module_U.listen(function (t) {
-      var r = t.location || t;
-      n.routeTo("" + (r.pathname || "") + (r.search || ""));
-    })), this.p = !1;
-  },
-  componentWillUnmount: function componentWillUnmount() {
-    "function" == typeof this.u && this.u(), preact_router_module_m.splice(preact_router_module_m.indexOf(this), 1);
-  },
-  componentWillUpdate: function componentWillUpdate() {
-    this.p = !0;
-  },
-  componentDidUpdate: function componentDidUpdate() {
-    this.p = !1;
-  },
-  g: function g(n, t) {
-    n = n.filter(preact_router_module_v).sort(preact_router_module_h);
-    for (var r = 0; r < n.length; r++) {
-      var i = n[r],
-        o = preact_router_module_s(t, i.props.path, i.props);
-      if (o) return [i, o];
-    }
-  },
-  render: function render(n, t) {
-    var e,
-      u,
-      f = n.onChange,
-      a = t.url,
-      s = this.c,
-      h = this.g(Object(external_preact_["toChildArray"])(n.children), a);
-    if (h && (u = Object(external_preact_["cloneElement"])(h[0], preact_router_module_c(preact_router_module_c({
-      url: a,
-      matches: e = h[1]
-    }, e), {
-      key: void 0,
-      ref: void 0
-    }))), a !== (s && s.url)) {
-      preact_router_module_c(preact_router_module_g, s = this.c = {
-        url: a,
-        previous: s && s.url,
-        current: u,
-        path: u ? u.props.path : null,
-        matches: e
-      }), s.router = this, s.active = u ? [u] : [];
-      for (var v = preact_router_module_y.length; v--;) preact_router_module_y[v]({});
-      "function" == typeof f && f(s);
-    }
-    return Object(external_preact_["h"])(preact_router_module_k.Provider, {
-      value: s
-    }, u);
-  }
-});
-var preact_router_module_E = function E(n) {
-    return Object(external_preact_["h"])("a", preact_router_module_c({
-      onClick: W
-    }, n));
-  },
-  preact_router_module_L = function L(n) {
-    return Object(external_preact_["h"])(n.component, n);
-  };
-
-// CONCATENATED MODULE: ./components/header/style.css
-// extracted by mini-css-extract-plugin
-/* harmony default export */ var style = ({"header":"header__OVZyn","header_fixed":"header_fixed__e+u-O","header_hidden":"header_hidden__HZ-RF","title":"title__I4umU","subtitle":"subtitle__0gF3H"});
-// CONCATENATED MODULE: ./components/header/index.tsx
-
-
-
-var header_Header = function Header(_ref) {
-  var ariaHidden = _ref.ariaHidden;
-  return Object(external_preact_["h"])("header", {
-    "aria-hidden": !!ariaHidden,
-    class: "".concat(style.header, " ").concat(ariaHidden ? style.header_hidden : style.header_fixed)
-  }, Object(external_preact_["h"])("h1", {
-    class: style.title
-  }, "Akifumi Akazawa(Tomiyama)"), Object(external_preact_["h"])("p", {
-    class: style.subtitle
-  }, "Software Engineer skilled in Web Application and Data Engineering."), Object(external_preact_["h"])("nav", null, Object(external_preact_["h"])("ul", null, Object(external_preact_["h"])("li", null, Object(external_preact_["h"])(preact_router_module_E, {
-    class: "fa-solid fa-file",
-    href: "/assets/akifumi_akazawa_resume_en.pdf",
-    target: "_blank",
-    rel: "noopener noreferrer"
-  }, Object(external_preact_["h"])("span", {
-    class: style.label
-  }, "Resume(en)"))), Object(external_preact_["h"])("li", null, Object(external_preact_["h"])(preact_router_module_E, {
-    class: "fa-solid fa-file",
-    href: "/assets/akifumi_akazawa_resume_ja.pdf",
-    target: "_blank",
-    rel: "noopener noreferrer"
-  }, Object(external_preact_["h"])("span", {
-    class: style.label
-  }, "Resume(ja)"))), Object(external_preact_["h"])("li", null, Object(external_preact_["h"])("a", {
-    class: "fa-brands fa-github",
-    href: "https://github.com/atomiyama"
-  }, Object(external_preact_["h"])("span", {
-    class: style.label
-  }, "GitHub"))), Object(external_preact_["h"])("li", null, Object(external_preact_["h"])("a", {
-    class: "fa-brands fa-twitter",
-    href: "https://twitter.com/atomiyama1216"
-  }, Object(external_preact_["h"])("span", {
-    class: style.label
-  }, "Twitter"))), Object(external_preact_["h"])("li", null, Object(external_preact_["h"])("a", {
-    class: "fa-brands fa-linkedin",
-    href: "https://linkedin.com/in/atomiyama1216"
-  }, Object(external_preact_["h"])("span", {
-    class: style.label
-  }, "LinkedIn"))), Object(external_preact_["h"])("li", null, Object(external_preact_["h"])("a", {
-    class: "fa-brands fa-facebook",
-    href: "https://www.facebook.com/atomiyama1216"
-  }, Object(external_preact_["h"])("span", {
-    class: style.label
-  }, "Facebook"))), Object(external_preact_["h"])("li", null, Object(external_preact_["h"])("a", {
-    class: "fa-regular fa-envelope",
-    href: "mailto:tomisuker16@gmail.com"
-  }, Object(external_preact_["h"])("span", {
-    class: style.label
-  }, "Email"))))), Object(external_preact_["h"])("hr", null));
-};
-// EXTERNAL MODULE: ../node_modules/@preact/prerender-data-provider/src/context.js
-var context = __webpack_require__("/3MO");
-
-// EXTERNAL MODULE: ../node_modules/@preact/prerender-data-provider/src/render-prop.js
-var render_prop = __webpack_require__("MFe8");
-
 // EXTERNAL MODULE: ../node_modules/@preact/prerender-data-provider/src/utils.js
 var utils = __webpack_require__("qQTh");
 
@@ -733,7 +979,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 function usePrerenderData(props) {
   var doAutomaticFetch = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
   var value;
-  var _useState = hooks_module_h({
+  var _useState = h({
       value: value,
       isLoading: false,
       error: false
@@ -819,11 +1065,11 @@ var useCmd_useCmd = function useCmd() {
   });
 
   // To restore history when user presses up/down arrow keys
-  var _useState = hooks_module_h([]),
+  var _useState = h([]),
     _useState2 = useCmd_slicedToArray(_useState, 2),
     results = _useState2[0],
     setResults = _useState2[1];
-  var _useState3 = hooks_module_h(0),
+  var _useState3 = h(0),
     _useState4 = useCmd_slicedToArray(_useState3, 2),
     historyIndex = _useState4[0],
     setHistoryIndex = _useState4[1];
@@ -879,7 +1125,6 @@ var useCmd_useCmd = function useCmd() {
     };
   }, [results, historyIndex]);
   var handleExecCmd = function handleExecCmd(input) {
-    console.log(input);
     var command = input.split(' ')[0];
     var args = input.split(' ').slice(1);
     if (command === 'clear') {
@@ -1121,7 +1366,12 @@ var cmd_CmdOutput = function CmdOutput(_ref) {
       }
   }
 };
+// EXTERNAL MODULE: ../node_modules/react-ga4/dist/index.js
+var dist = __webpack_require__("/CiD");
+var dist_default = /*#__PURE__*/__webpack_require__.n(dist);
+
 // CONCATENATED MODULE: ./components/terminal/index.tsx
+
 
 
 
@@ -1155,6 +1405,9 @@ var terminal_Prompt = function Prompt(_ref) {
     e.preventDefault();
     var input = e.target.command.value;
     handleExecCmd(input);
+    dist_default.a.event("submit_form", {
+      input: input
+    });
     // reset input field
     e.target.command.value = '';
   };
@@ -1187,16 +1440,16 @@ function compat_module_typeof(obj) { "@babel/helpers - typeof"; return compat_mo
 
 
 
-function S(n, t) {
+function compat_module_g(n, t) {
   for (var e in t) n[e] = t[e];
   return n;
 }
-function compat_module_C(n, t) {
+function C(n, t) {
   for (var e in n) if ("__source" !== e && !(e in t)) return !0;
   for (var r in t) if ("__source" !== r && n[r] !== t[r]) return !0;
   return !1;
 }
-function compat_module_E(n, t) {
+function E(n, t) {
   return n === t && (0 !== n || 1 / n == 1 / t) || n != n && t != t;
 }
 function compat_module_w(n) {
@@ -1206,7 +1459,7 @@ function compat_module_x(n, e) {
   function r(n) {
     var t = this.props.ref,
       r = t == n.ref;
-    return !r && t && (t.call ? t(null) : t.current = null), e ? !e(this.props, n) || !r : compat_module_C(this.props, n);
+    return !r && t && (t.call ? t(null) : t.current = null), e ? !e(this.props, n) || !r : C(this.props, n);
   }
   function u(e) {
     return this.shouldComponentUpdate = r, Object(external_preact_["createElement"])(n, e);
@@ -1214,16 +1467,16 @@ function compat_module_x(n, e) {
   return u.displayName = "Memo(" + (n.displayName || n.name) + ")", u.prototype.isReactComponent = !0, u.__f = !0, u;
 }
 (compat_module_w.prototype = new external_preact_["Component"]()).isPureReactComponent = !0, compat_module_w.prototype.shouldComponentUpdate = function (n, t) {
-  return compat_module_C(this.props, n) || compat_module_C(this.state, t);
+  return C(this.props, n) || C(this.state, t);
 };
-var compat_module_R = external_preact_["options"].__b;
+var R = external_preact_["options"].__b;
 external_preact_["options"].__b = function (n) {
-  n.type && n.type.__f && n.ref && (n.props.ref = n.ref, n.ref = null), compat_module_R && compat_module_R(n);
+  n.type && n.type.__f && n.ref && (n.props.ref = n.ref, n.ref = null), R && R(n);
 };
 var N = "undefined" != typeof Symbol && Symbol.for && Symbol.for("react.forward_ref") || 3911;
 function compat_module_k(n) {
   function t(t) {
-    var e = S({}, t);
+    var e = compat_module_g({}, t);
     return delete e.ref, n(e, t.ref || null);
   }
   return t.$$typeof = N, t.render = t, t.prototype.isReactComponent = t.__f = !0, t.displayName = "ForwardRef(" + (n.displayName || n.name) + ")", t;
@@ -1249,27 +1502,27 @@ external_preact_["options"].__e = function (n, t, e, r) {
   if (n.then) for (var u, o = t; o = o.__;) if ((u = o.__c) && u.__c) return null == t.__e && (t.__e = e.__e, t.__k = e.__k), u.__c(n, t);
   compat_module_T(n, t, e, r);
 };
-var compat_module_I = external_preact_["options"].unmount;
-function compat_module_L(n, t, e) {
+var I = external_preact_["options"].unmount;
+function L(n, t, e) {
   return n && (n.__c && n.__c.__H && (n.__c.__H.__.forEach(function (n) {
     "function" == typeof n.__c && n.__c();
-  }), n.__c.__H = null), null != (n = S({}, n)).__c && (n.__c.__P === e && (n.__c.__P = t), n.__c = null), n.__k = n.__k && n.__k.map(function (n) {
-    return compat_module_L(n, t, e);
+  }), n.__c.__H = null), null != (n = compat_module_g({}, n)).__c && (n.__c.__P === e && (n.__c.__P = t), n.__c = null), n.__k = n.__k && n.__k.map(function (n) {
+    return L(n, t, e);
   })), n;
 }
-function compat_module_P(n, t, e) {
+function compat_module_U(n, t, e) {
   return n && (n.__v = null, n.__k = n.__k && n.__k.map(function (n) {
-    return compat_module_P(n, t, e);
+    return compat_module_U(n, t, e);
   }), n.__c && n.__c.__P === t && (n.__e && e.insertBefore(n.__e, n.__d), n.__c.__e = !0, n.__c.__P = e)), n;
 }
-function compat_module_U() {
+function D() {
   this.__u = 0, this.t = null, this.__b = null;
 }
-function compat_module_D(n) {
+function compat_module_F(n) {
   var t = n.__.__c;
   return t && t.__a && t.__a(n);
 }
-function compat_module_F(n) {
+function M(n) {
   var e, r, u;
   function o(o) {
     if (e || (e = n()).then(function (n) {
@@ -1282,17 +1535,17 @@ function compat_module_F(n) {
   }
   return o.displayName = "Lazy", o.__f = !0, o;
 }
-function compat_module_M() {
+function compat_module_V() {
   this.u = null, this.o = null;
 }
 external_preact_["options"].unmount = function (n) {
   var t = n.__c;
-  t && t.__R && t.__R(), t && !0 === n.__h && (n.type = null), compat_module_I && compat_module_I(n);
-}, (compat_module_U.prototype = new external_preact_["Component"]()).__c = function (n, t) {
+  t && t.__R && t.__R(), t && !0 === n.__h && (n.type = null), I && I(n);
+}, (D.prototype = new external_preact_["Component"]()).__c = function (n, t) {
   var e = t.__c,
     r = this;
   null == r.t && (r.t = []), r.t.push(e);
-  var u = compat_module_D(r.__v),
+  var u = compat_module_F(r.__v),
     o = !1,
     i = function i() {
       o || (o = !0, e.__R = null, u ? u(l) : l());
@@ -1302,7 +1555,7 @@ external_preact_["options"].unmount = function (n) {
       if (! --r.__u) {
         if (r.state.__a) {
           var n = r.state.__a;
-          r.__v.__k[0] = compat_module_P(n, n.__c.__P, n.__c.__O);
+          r.__v.__k[0] = compat_module_U(n, n.__c.__P, n.__c.__O);
         }
         var t;
         for (r.setState({
@@ -1314,28 +1567,28 @@ external_preact_["options"].unmount = function (n) {
   r.__u++ || c || r.setState({
     __a: r.__b = r.__v.__k[0]
   }), n.then(i, i);
-}, compat_module_U.prototype.componentWillUnmount = function () {
+}, D.prototype.componentWillUnmount = function () {
   this.t = [];
-}, compat_module_U.prototype.render = function (n, e) {
+}, D.prototype.render = function (n, e) {
   if (this.__b) {
     if (this.__v.__k) {
       var r = document.createElement("div"),
         o = this.__v.__k[0].__c;
-      this.__v.__k[0] = compat_module_L(this.__b, r, o.__O = o.__P);
+      this.__v.__k[0] = L(this.__b, r, o.__O = o.__P);
     }
     this.__b = null;
   }
   var i = e.__a && Object(external_preact_["createElement"])(external_preact_["Fragment"], null, n.fallback);
   return i && (i.__h = null), [Object(external_preact_["createElement"])(external_preact_["Fragment"], null, e.__a ? null : n.children), i];
 };
-var compat_module_V = function V(n, t, e) {
+var W = function W(n, t, e) {
   if (++e[1] === e[0] && n.o.delete(t), n.props.revealOrder && ("t" !== n.props.revealOrder[0] || !n.o.size)) for (e = n.u; e;) {
     for (; e.length > 3;) e.pop()();
     if (e[1] < e[0]) break;
     n.u = e = e[2];
   }
 };
-function compat_module_W(n) {
+function compat_module_P(n) {
   return this.getChildContext = function () {
     return n.context;
   }, n.children;
@@ -1358,7 +1611,7 @@ function compat_module_j(n) {
     removeChild: function removeChild(n) {
       this.childNodes.splice(this.childNodes.indexOf(n) >>> 1, 1), e.i.removeChild(n);
     }
-  }), Object(external_preact_["render"])(Object(external_preact_["createElement"])(compat_module_W, {
+  }), Object(external_preact_["render"])(Object(external_preact_["createElement"])(compat_module_P, {
     context: e.context
   }, n.__v), e.l)) : e.l && e.componentWillUnmount();
 }
@@ -1369,33 +1622,33 @@ function compat_module_z(n, e) {
   });
   return r.containerInfo = e, r;
 }
-(compat_module_M.prototype = new external_preact_["Component"]()).__a = function (n) {
+(compat_module_V.prototype = new external_preact_["Component"]()).__a = function (n) {
   var t = this,
-    e = compat_module_D(t.__v),
+    e = compat_module_F(t.__v),
     r = t.o.get(n);
   return r[0]++, function (u) {
     var o = function o() {
-      t.props.revealOrder ? (r.push(u), compat_module_V(t, n, r)) : u();
+      t.props.revealOrder ? (r.push(u), W(t, n, r)) : u();
     };
     e ? e(o) : o();
   };
-}, compat_module_M.prototype.render = function (n) {
+}, compat_module_V.prototype.render = function (n) {
   this.u = null, this.o = new Map();
   var t = Object(external_preact_["toChildArray"])(n.children);
   n.revealOrder && "b" === n.revealOrder[0] && t.reverse();
   for (var e = t.length; e--;) this.o.set(t[e], this.u = [1, 0, this.u]);
   return n.children;
-}, compat_module_M.prototype.componentDidUpdate = compat_module_M.prototype.componentDidMount = function () {
+}, compat_module_V.prototype.componentDidUpdate = compat_module_V.prototype.componentDidMount = function () {
   var n = this;
   this.o.forEach(function (t, e) {
-    compat_module_V(n, e, t);
+    W(n, e, t);
   });
 };
 var compat_module_B = "undefined" != typeof Symbol && Symbol.for && Symbol.for("react.element") || 60103,
-  compat_module_H = /^(?:accent|alignment|arabic|baseline|cap|clip(?!PathU)|color|dominant|fill|flood|font|glyph(?!R)|horiz|image(!S)|letter|lighting|marker(?!H|W|U)|overline|paint|pointer|shape|stop|strikethrough|stroke|text(?!L)|transform|underline|unicode|units|v|vector|vert|word|writing|x(?!C))[A-Z]/,
+  compat_module_H = /^(?:accent|alignment|arabic|baseline|cap|clip(?!PathU)|color|dominant|fill|flood|font|glyph(?!R)|horiz|image|letter|lighting|marker(?!H|W|U)|overline|paint|pointer|shape|stop|strikethrough|stroke|text(?!L)|transform|underline|unicode|units|v|vector|vert|word|writing|x(?!C))[A-Z]/,
   Z = /^on(Ani|Tra|Tou|BeforeInp|Compo)/,
   Y = /[A-Z0-9]/g,
-  compat_module_$ = "undefined" != typeof document,
+  $ = "undefined" != typeof document,
   compat_module_q = function q(n) {
     return ("undefined" != typeof Symbol && "symbol" == compat_module_typeof(Symbol()) ? /fil|che|rad/ : /fil|che|ra/).test(n);
   };
@@ -1429,18 +1682,7 @@ function nn() {
   return this.defaultPrevented;
 }
 external_preact_["options"].event = function (n) {
-  K && (n = K(n));
-  var t = n.currentTarget,
-    e = n.type;
-  return "input" !== e && "change" !== e || !t.h || Promise.resolve().then(function () {
-    return function (n, t) {
-      null != t.value && Promise.resolve().then(function () {
-        return t.value = t.v;
-      }), "change" === n && null != t.checked && Promise.resolve().then(function () {
-        return t.checked = t.v;
-      });
-    }(e, t);
-  }), n.persist = Q, n.isPropagationStopped = X, n.isDefaultPrevented = nn, n.nativeEvent = n;
+  return K && (n = K(n)), n.persist = Q, n.isPropagationStopped = X, n.isDefaultPrevented = nn, n.nativeEvent = n;
 };
 var compat_module_tn,
   compat_module_en = {
@@ -1458,7 +1700,7 @@ external_preact_["options"].vnode = function (n) {
       u = {};
     for (var o in t) {
       var i = t[o];
-      if (!("value" === o && "defaultValue" in t && null == i || compat_module_$ && "children" === o && "noscript" === e || "class" === o || "className" === o)) {
+      if (!("value" === o && "defaultValue" in t && null == i || $ && "children" === o && "noscript" === e || "class" === o || "className" === o)) {
         var l = o.toLowerCase();
         "defaultValue" === o && "value" in t && null == t.value ? o = "value" : "download" === o && !0 === i ? i = "" : "ondoubleclick" === l ? o = "ondblclick" : "onchange" !== l || "input" !== e && "textarea" !== e || compat_module_q(t.type) ? "onfocus" === l ? o = "onfocusin" : "onblur" === l ? o = "onfocusout" : Z.test(o) ? o = l : -1 === e.indexOf("-") && compat_module_H.test(o) ? o = o.replace(Y, "-$&").toLowerCase() : null === i && (i = void 0) : l = o = "oninput", "oninput" === l && u[o = l] && (o = "oninputCapture"), u[o] = i;
       }
@@ -1477,11 +1719,9 @@ external_preact_["options"].__r = function (n) {
 var compat_module_on = external_preact_["options"].diffed;
 external_preact_["options"].diffed = function (n) {
   compat_module_on && compat_module_on(n);
-  var t = n.type,
-    e = n.props,
-    r = n.__e,
-    u = r && r.h;
-  null == r || "input" !== t && "textarea" !== t && "select" !== t || !1 === u || (u || e.oninput || e.onchange || e.onChange) && (null != e.value ? (r.h = !0, r.v = e.value) : null != e.checked ? (r.h = !0, r.v = e.checked) : r.h = !1), null != r && "textarea" === n.type && "value" in e && e.value !== r.value && (r.value = null == e.value ? "" : e.value), compat_module_tn = null;
+  var t = n.props,
+    e = n.__e;
+  null != e && "textarea" === n.type && "value" in t && t.value !== e.value && (e.value = null == t.value ? "" : t.value), compat_module_tn = null;
 };
 var ln = {
     ReactCurrentDispatcher: {
@@ -1524,41 +1764,41 @@ function _n(n) {
 function bn() {
   return [!1, yn];
 }
-var gn = y;
-function Sn(n, t) {
+var Sn = y;
+function gn(n, t) {
   var e = t(),
-    r = hooks_module_h({
-      p: {
+    r = h({
+      h: {
         __: e,
-        m: t
+        v: t
       }
     }),
-    u = r[0].p,
+    u = r[0].h,
     o = r[1];
   return y(function () {
-    u.__ = e, u.m = t, compat_module_E(u.__, t()) || o({
-      p: u
+    u.__ = e, u.v = t, E(u.__, t()) || o({
+      h: u
     });
   }, [n, e, t]), p(function () {
-    return compat_module_E(u.__, u.m()) || o({
-      p: u
+    return E(u.__, u.v()) || o({
+      h: u
     }), n(function () {
-      compat_module_E(u.__, u.m()) || o({
-        p: u
+      E(u.__, u.v()) || o({
+        h: u
       });
     });
   }, [n]), e;
 }
 var Cn = {
-  useState: hooks_module_h,
+  useState: h,
   useId: V,
-  useReducer: hooks_module_s,
+  useReducer: s,
   useEffect: p,
   useLayoutEffect: y,
-  useInsertionEffect: gn,
+  useInsertionEffect: Sn,
   useTransition: bn,
   useDeferredValue: _n,
-  useSyncExternalStore: Sn,
+  useSyncExternalStore: gn,
   startTransition: yn,
   useRef: hooks_module_,
   useImperativeHandle: hooks_module_A,
@@ -1587,9 +1827,9 @@ var Cn = {
   flushSync: pn,
   unstable_batchedUpdates: dn,
   StrictMode: mn,
-  Suspense: compat_module_U,
-  SuspenseList: compat_module_M,
-  lazy: compat_module_F,
+  Suspense: D,
+  SuspenseList: compat_module_V,
+  lazy: M,
   __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED: ln
 };
 
@@ -1637,7 +1877,7 @@ var index_module_t = ["children", "options"],
   index_module_k = /\f/g,
   index_module_x = /^\s*?\[(x|\s)\]/,
   index_module_b = /^ *(#{1,6}) *([^\n]+?)(?: +#*)?(?:\n *)*(?:\n|$)/,
-  index_module_S = /^([^\n]+)\n *(=|-){3,} *(?:\n *)+\n/,
+  S = /^([^\n]+)\n *(=|-){3,} *(?:\n *)+\n/,
   index_module_$ = /^ *(?!<[a-z][^ >/]* ?\/>)<([a-z][^ >/]*) ?([^>]*)\/{0}>\n?(\s*(?:<\1[^>]*?>[\s\S]*?<\/\1>|(?!<\1)[\s\S])*?)<\/\1>\n*/i,
   index_module_z = /&([a-zA-Z]+);/g,
   index_module_w = /^<!--[\s\S]*?(?:-->)/,
@@ -1743,7 +1983,7 @@ function index_module_hn(n, r) {
 }
 var kn = /^\[([^\]]*)]\( *((?:\([^)]*\)|[^() ])*) *"?([^)"]*)?"?\)/,
   xn = /^!\[([^\]]*)]\( *((?:\([^)]*\)|[^() ])*) *"?([^)"]*)?"?\)/,
-  index_module_bn = [index_module_, index_module_d, index_module_p, index_module_b, index_module_S, index_module_w, index_module_R, index_module_pn, index_module_vn, index_module_mn, index_module_yn],
+  index_module_bn = [index_module_, index_module_d, index_module_p, index_module_b, S, index_module_w, index_module_R, index_module_pn, index_module_vn, index_module_mn, index_module_yn],
   index_module_Sn = [].concat(index_module_bn, [/^[^\n]+(?:  \n|\n{2,})/, index_module_$, index_module_E]);
 function $n(n) {
   return n.replace(/[ÀÁÂÃÄÅàáâãäåæÆ]/g, "a").replace(/[çÇ]/g, "c").replace(/[ðÐ]/g, "d").replace(/[ÈÉÊËéèêë]/g, "e").replace(/[ÏïÎîÍíÌì]/g, "i").replace(/[Ññ]/g, "n").replace(/[øØœŒÕõÔôÓóÒò]/g, "o").replace(/[ÜüÛûÚúÙù]/g, "u").replace(/[ŸÿÝý]/g, "y").replace(/[^a-z0-9- ]/gi, "").replace(/ /gi, "-").toLowerCase();
@@ -2067,7 +2307,7 @@ function Un(t, i) {
         }
       },
       headingSetext: {
-        t: In(index_module_S),
+        t: In(S),
         _: Nn.MAX,
         l: function l(n, r, t) {
           return {
@@ -2506,10 +2746,10 @@ var app_App = function App(props) {
     id: "app"
   }, Object(external_preact_["h"])(header_Header, null), Object(external_preact_["h"])(header_Header, {
     ariaHidden: true
-  }), Object(external_preact_["h"])("main", null, Object(external_preact_["h"])(D, null, Object(external_preact_["h"])(preact_router_module_L, {
+  }), Object(external_preact_["h"])("main", null, Object(external_preact_["h"])(preact_router_es_Router, null, Object(external_preact_["h"])(preact_router_es_Route, {
     path: "/",
     component: home
-  }), Object(external_preact_["h"])(preact_router_module_L, {
+  }), Object(external_preact_["h"])(preact_router_es_Route, {
     path: "/posts/:post_id*",
     component: post
   })))));
@@ -2518,7 +2758,631 @@ var app_App = function App(props) {
 // CONCATENATED MODULE: ./index.ts
 
 
+
+dist_default.a.initialize('G-PB50YCHPRR');
 /* harmony default export */ var index = __webpack_exports__["default"] = (app);
+
+/***/ }),
+
+/***/ "s0TJ":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = exports.GA4 = void 0;
+var _gtag = _interopRequireDefault(__webpack_require__("voWo"));
+var _format = _interopRequireDefault(__webpack_require__("0uLP"));
+var _excluded = ["eventCategory", "eventAction", "eventLabel", "eventValue", "hitType"],
+  _excluded2 = ["title", "location"],
+  _excluded3 = ["page", "hitType"];
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : {
+    "default": obj
+  };
+}
+function _objectWithoutProperties(source, excluded) {
+  if (source == null) return {};
+  var target = _objectWithoutPropertiesLoose(source, excluded);
+  var key, i;
+  if (Object.getOwnPropertySymbols) {
+    var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
+    for (i = 0; i < sourceSymbolKeys.length; i++) {
+      key = sourceSymbolKeys[i];
+      if (excluded.indexOf(key) >= 0) continue;
+      if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
+      target[key] = source[key];
+    }
+  }
+  return target;
+}
+function _objectWithoutPropertiesLoose(source, excluded) {
+  if (source == null) return {};
+  var target = {};
+  var sourceKeys = Object.keys(source);
+  var key, i;
+  for (i = 0; i < sourceKeys.length; i++) {
+    key = sourceKeys[i];
+    if (excluded.indexOf(key) >= 0) continue;
+    target[key] = source[key];
+  }
+  return target;
+}
+function _typeof(obj) {
+  "@babel/helpers - typeof";
+
+  return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) {
+    return typeof obj;
+  } : function (obj) {
+    return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+  }, _typeof(obj);
+}
+function _toConsumableArray(arr) {
+  return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();
+}
+function _nonIterableSpread() {
+  throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+}
+function _iterableToArray(iter) {
+  if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter);
+}
+function _arrayWithoutHoles(arr) {
+  if (Array.isArray(arr)) return _arrayLikeToArray(arr);
+}
+function ownKeys(object, enumerableOnly) {
+  var keys = Object.keys(object);
+  if (Object.getOwnPropertySymbols) {
+    var symbols = Object.getOwnPropertySymbols(object);
+    enumerableOnly && (symbols = symbols.filter(function (sym) {
+      return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+    })), keys.push.apply(keys, symbols);
+  }
+  return keys;
+}
+function _objectSpread(target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = null != arguments[i] ? arguments[i] : {};
+    i % 2 ? ownKeys(Object(source), !0).forEach(function (key) {
+      _defineProperty(target, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) {
+      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+    });
+  }
+  return target;
+}
+function _slicedToArray(arr, i) {
+  return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();
+}
+function _nonIterableRest() {
+  throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+}
+function _unsupportedIterableToArray(o, minLen) {
+  if (!o) return;
+  if (typeof o === "string") return _arrayLikeToArray(o, minLen);
+  var n = Object.prototype.toString.call(o).slice(8, -1);
+  if (n === "Object" && o.constructor) n = o.constructor.name;
+  if (n === "Map" || n === "Set") return Array.from(o);
+  if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
+}
+function _arrayLikeToArray(arr, len) {
+  if (len == null || len > arr.length) len = arr.length;
+  for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
+  return arr2;
+}
+function _iterableToArrayLimit(arr, i) {
+  var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"];
+  if (null != _i) {
+    var _s,
+      _e,
+      _x,
+      _r,
+      _arr = [],
+      _n = !0,
+      _d = !1;
+    try {
+      if (_x = (_i = _i.call(arr)).next, 0 === i) {
+        if (Object(_i) !== _i) return;
+        _n = !1;
+      } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0);
+    } catch (err) {
+      _d = !0, _e = err;
+    } finally {
+      try {
+        if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return;
+      } finally {
+        if (_d) throw _e;
+      }
+    }
+    return _arr;
+  }
+}
+function _arrayWithHoles(arr) {
+  if (Array.isArray(arr)) return arr;
+}
+function _classCallCheck(instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+}
+function _defineProperties(target, props) {
+  for (var i = 0; i < props.length; i++) {
+    var descriptor = props[i];
+    descriptor.enumerable = descriptor.enumerable || false;
+    descriptor.configurable = true;
+    if ("value" in descriptor) descriptor.writable = true;
+    Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor);
+  }
+}
+function _createClass(Constructor, protoProps, staticProps) {
+  if (protoProps) _defineProperties(Constructor.prototype, protoProps);
+  if (staticProps) _defineProperties(Constructor, staticProps);
+  Object.defineProperty(Constructor, "prototype", {
+    writable: false
+  });
+  return Constructor;
+}
+function _defineProperty(obj, key, value) {
+  key = _toPropertyKey(key);
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+  return obj;
+}
+function _toPropertyKey(arg) {
+  var key = _toPrimitive(arg, "string");
+  return _typeof(key) === "symbol" ? key : String(key);
+}
+function _toPrimitive(input, hint) {
+  if (_typeof(input) !== "object" || input === null) return input;
+  var prim = input[Symbol.toPrimitive];
+  if (prim !== undefined) {
+    var res = prim.call(input, hint || "default");
+    if (_typeof(res) !== "object") return res;
+    throw new TypeError("@@toPrimitive must return a primitive value.");
+  }
+  return (hint === "string" ? String : Number)(input);
+}
+/*
+Links
+https://developers.google.com/gtagjs/reference/api
+https://developers.google.com/tag-platform/gtagjs/reference
+*/
+/**
+ * @typedef GaOptions
+ * @type {Object}
+ * @property {boolean} [cookieUpdate=true]
+ * @property {number} [cookieExpires=63072000] Default two years
+ * @property {string} [cookieDomain="auto"]
+ * @property {string} [cookieFlags]
+ * @property {string} [userId]
+ * @property {string} [clientId]
+ * @property {boolean} [anonymizeIp]
+ * @property {string} [contentGroup1]
+ * @property {string} [contentGroup2]
+ * @property {string} [contentGroup3]
+ * @property {string} [contentGroup4]
+ * @property {string} [contentGroup5]
+ * @property {boolean} [allowAdFeatures=true]
+ * @property {boolean} [allowAdPersonalizationSignals]
+ * @property {boolean} [nonInteraction]
+ * @property {string} [page]
+ */
+/**
+ * @typedef UaEventOptions
+ * @type {Object}
+ * @property {string} action
+ * @property {string} category
+ * @property {string} [label]
+ * @property {number} [value]
+ * @property {boolean} [nonInteraction]
+ * @property {('beacon'|'xhr'|'image')} [transport]
+ */
+/**
+ * @typedef InitOptions
+ * @type {Object}
+ * @property {string} trackingId
+ * @property {GaOptions|any} [gaOptions]
+ * @property {Object} [gtagOptions] New parameter
+ */
+var GA4 = /*#__PURE__*/function () {
+  function GA4() {
+    var _this = this;
+    _classCallCheck(this, GA4);
+    _defineProperty(this, "reset", function () {
+      _this.isInitialized = false;
+      _this._testMode = false;
+      _this._currentMeasurementId;
+      _this._hasLoadedGA = false;
+      _this._isQueuing = false;
+      _this._queueGtag = [];
+    });
+    _defineProperty(this, "_gtag", function () {
+      for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+      }
+      if (!_this._testMode) {
+        if (_this._isQueuing) {
+          _this._queueGtag.push(args);
+        } else {
+          _gtag["default"].apply(void 0, args);
+        }
+      } else {
+        _this._queueGtag.push(args);
+      }
+    });
+    _defineProperty(this, "_loadGA", function (GA_MEASUREMENT_ID, nonce) {
+      var gtagUrl = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "https://www.googletagmanager.com/gtag/js";
+      if (typeof window === "undefined" || typeof document === "undefined") {
+        return;
+      }
+      if (!_this._hasLoadedGA) {
+        // Global Site Tag (gtag.js) - Google Analytics
+        var script = document.createElement("script");
+        script.async = true;
+        script.src = "".concat(gtagUrl, "?id=").concat(GA_MEASUREMENT_ID);
+        if (nonce) {
+          script.setAttribute("nonce", nonce);
+        }
+        document.body.appendChild(script);
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = function gtag() {
+          window.dataLayer.push(arguments);
+        };
+        _this._hasLoadedGA = true;
+      }
+    });
+    _defineProperty(this, "_toGtagOptions", function (gaOptions) {
+      if (!gaOptions) {
+        return;
+      }
+      var mapFields = {
+        // Old https://developers.google.com/analytics/devguides/collection/analyticsjs/field-reference#cookieUpdate
+        // New https://developers.google.com/analytics/devguides/collection/gtagjs/cookies-user-id#cookie_update
+        cookieUpdate: "cookie_update",
+        cookieExpires: "cookie_expires",
+        cookieDomain: "cookie_domain",
+        cookieFlags: "cookie_flags",
+        // must be in set method?
+        userId: "user_id",
+        clientId: "client_id",
+        anonymizeIp: "anonymize_ip",
+        // https://support.google.com/analytics/answer/2853546?hl=en#zippy=%2Cin-this-article
+        contentGroup1: "content_group1",
+        contentGroup2: "content_group2",
+        contentGroup3: "content_group3",
+        contentGroup4: "content_group4",
+        contentGroup5: "content_group5",
+        // https://support.google.com/analytics/answer/9050852?hl=en
+        allowAdFeatures: "allow_google_signals",
+        allowAdPersonalizationSignals: "allow_ad_personalization_signals",
+        nonInteraction: "non_interaction",
+        page: "page_path",
+        hitCallback: "event_callback"
+      };
+      var gtagOptions = Object.entries(gaOptions).reduce(function (prev, _ref) {
+        var _ref2 = _slicedToArray(_ref, 2),
+          key = _ref2[0],
+          value = _ref2[1];
+        if (mapFields[key]) {
+          prev[mapFields[key]] = value;
+        } else {
+          prev[key] = value;
+        }
+        return prev;
+      }, {});
+      return gtagOptions;
+    });
+    _defineProperty(this, "initialize", function (GA_MEASUREMENT_ID) {
+      var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+      if (!GA_MEASUREMENT_ID) {
+        throw new Error("Require GA_MEASUREMENT_ID");
+      }
+      var initConfigs = typeof GA_MEASUREMENT_ID === "string" ? [{
+        trackingId: GA_MEASUREMENT_ID
+      }] : GA_MEASUREMENT_ID;
+      _this._currentMeasurementId = initConfigs[0].trackingId;
+      var gaOptions = options.gaOptions,
+        gtagOptions = options.gtagOptions,
+        nonce = options.nonce,
+        _options$testMode = options.testMode,
+        testMode = _options$testMode === void 0 ? false : _options$testMode,
+        gtagUrl = options.gtagUrl;
+      _this._testMode = testMode;
+      if (!testMode) {
+        _this._loadGA(_this._currentMeasurementId, nonce, gtagUrl);
+      }
+      if (!_this.isInitialized) {
+        _this._gtag("js", new Date());
+        initConfigs.forEach(function (config) {
+          var mergedGtagOptions = _objectSpread(_objectSpread(_objectSpread({}, _this._toGtagOptions(_objectSpread(_objectSpread({}, gaOptions), config.gaOptions))), gtagOptions), config.gtagOptions);
+          if (Object.keys(mergedGtagOptions).length) {
+            _this._gtag("config", config.trackingId, mergedGtagOptions);
+          } else {
+            _this._gtag("config", config.trackingId);
+          }
+        });
+      }
+      _this.isInitialized = true;
+      if (!testMode) {
+        var queues = _toConsumableArray(_this._queueGtag);
+        _this._queueGtag = [];
+        _this._isQueuing = false;
+        while (queues.length) {
+          var queue = queues.shift();
+          _this._gtag.apply(_this, _toConsumableArray(queue));
+          if (queue[0] === "get") {
+            _this._isQueuing = true;
+          }
+        }
+      }
+    });
+    _defineProperty(this, "set", function (fieldsObject) {
+      if (!fieldsObject) {
+        console.warn("`fieldsObject` is required in .set()");
+        return;
+      }
+      if (_typeof(fieldsObject) !== "object") {
+        console.warn("Expected `fieldsObject` arg to be an Object");
+        return;
+      }
+      if (Object.keys(fieldsObject).length === 0) {
+        console.warn("empty `fieldsObject` given to .set()");
+      }
+      _this._gaCommand("set", fieldsObject);
+    });
+    _defineProperty(this, "_gaCommandSendEvent", function (eventCategory, eventAction, eventLabel, eventValue, fieldsObject) {
+      _this._gtag("event", eventAction, _objectSpread(_objectSpread({
+        event_category: eventCategory,
+        event_label: eventLabel,
+        value: eventValue
+      }, fieldsObject && {
+        non_interaction: fieldsObject.nonInteraction
+      }), _this._toGtagOptions(fieldsObject)));
+    });
+    _defineProperty(this, "_gaCommandSendEventParameters", function () {
+      for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+        args[_key2] = arguments[_key2];
+      }
+      if (typeof args[0] === "string") {
+        _this._gaCommandSendEvent.apply(_this, _toConsumableArray(args.slice(1)));
+      } else {
+        var _args$ = args[0],
+          eventCategory = _args$.eventCategory,
+          eventAction = _args$.eventAction,
+          eventLabel = _args$.eventLabel,
+          eventValue = _args$.eventValue,
+          hitType = _args$.hitType,
+          rest = _objectWithoutProperties(_args$, _excluded);
+        _this._gaCommandSendEvent(eventCategory, eventAction, eventLabel, eventValue, rest);
+      }
+    });
+    _defineProperty(this, "_gaCommandSendTiming", function (timingCategory, timingVar, timingValue, timingLabel) {
+      _this._gtag("event", "timing_complete", {
+        name: timingVar,
+        value: timingValue,
+        event_category: timingCategory,
+        event_label: timingLabel
+      });
+    });
+    _defineProperty(this, "_gaCommandSendPageview", function (page, fieldsObject) {
+      if (fieldsObject && Object.keys(fieldsObject).length) {
+        var _this$_toGtagOptions = _this._toGtagOptions(fieldsObject),
+          title = _this$_toGtagOptions.title,
+          location = _this$_toGtagOptions.location,
+          rest = _objectWithoutProperties(_this$_toGtagOptions, _excluded2);
+        _this._gtag("event", "page_view", _objectSpread(_objectSpread(_objectSpread(_objectSpread({}, page && {
+          page_path: page
+        }), title && {
+          page_title: title
+        }), location && {
+          page_location: location
+        }), rest));
+      } else if (page) {
+        _this._gtag("event", "page_view", {
+          page_path: page
+        });
+      } else {
+        _this._gtag("event", "page_view");
+      }
+    });
+    _defineProperty(this, "_gaCommandSendPageviewParameters", function () {
+      for (var _len3 = arguments.length, args = new Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+        args[_key3] = arguments[_key3];
+      }
+      if (typeof args[0] === "string") {
+        _this._gaCommandSendPageview.apply(_this, _toConsumableArray(args.slice(1)));
+      } else {
+        var _args$2 = args[0],
+          page = _args$2.page,
+          hitType = _args$2.hitType,
+          rest = _objectWithoutProperties(_args$2, _excluded3);
+        _this._gaCommandSendPageview(page, rest);
+      }
+    });
+    _defineProperty(this, "_gaCommandSend", function () {
+      for (var _len4 = arguments.length, args = new Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
+        args[_key4] = arguments[_key4];
+      }
+      var hitType = typeof args[0] === "string" ? args[0] : args[0].hitType;
+      switch (hitType) {
+        case "event":
+          _this._gaCommandSendEventParameters.apply(_this, args);
+          break;
+        case "pageview":
+          _this._gaCommandSendPageviewParameters.apply(_this, args);
+          break;
+        case "timing":
+          _this._gaCommandSendTiming.apply(_this, _toConsumableArray(args.slice(1)));
+          break;
+        case "screenview":
+        case "transaction":
+        case "item":
+        case "social":
+        case "exception":
+          console.warn("Unsupported send command: ".concat(hitType));
+          break;
+        default:
+          console.warn("Send command doesn't exist: ".concat(hitType));
+      }
+    });
+    _defineProperty(this, "_gaCommandSet", function () {
+      for (var _len5 = arguments.length, args = new Array(_len5), _key5 = 0; _key5 < _len5; _key5++) {
+        args[_key5] = arguments[_key5];
+      }
+      if (typeof args[0] === "string") {
+        args[0] = _defineProperty({}, args[0], args[1]);
+      }
+      _this._gtag("set", _this._toGtagOptions(args[0]));
+    });
+    _defineProperty(this, "_gaCommand", function (command) {
+      for (var _len6 = arguments.length, args = new Array(_len6 > 1 ? _len6 - 1 : 0), _key6 = 1; _key6 < _len6; _key6++) {
+        args[_key6 - 1] = arguments[_key6];
+      }
+      switch (command) {
+        case "send":
+          _this._gaCommandSend.apply(_this, args);
+          break;
+        case "set":
+          _this._gaCommandSet.apply(_this, args);
+          break;
+        default:
+          console.warn("Command doesn't exist: ".concat(command));
+      }
+    });
+    _defineProperty(this, "ga", function () {
+      for (var _len7 = arguments.length, args = new Array(_len7), _key7 = 0; _key7 < _len7; _key7++) {
+        args[_key7] = arguments[_key7];
+      }
+      if (typeof args[0] === "string") {
+        _this._gaCommand.apply(_this, args);
+      } else {
+        var readyCallback = args[0];
+        _this._gtag("get", _this._currentMeasurementId, "client_id", function (clientId) {
+          _this._isQueuing = false;
+          var queues = _this._queueGtag;
+          readyCallback({
+            get: function get(property) {
+              return property === "clientId" ? clientId : property === "trackingId" ? _this._currentMeasurementId : property === "apiVersion" ? "1" : undefined;
+            }
+          });
+          while (queues.length) {
+            var queue = queues.shift();
+            _this._gtag.apply(_this, _toConsumableArray(queue));
+          }
+        });
+        _this._isQueuing = true;
+      }
+      return _this.ga;
+    });
+    _defineProperty(this, "event", function (optionsOrName, params) {
+      if (typeof optionsOrName === "string") {
+        _this._gtag("event", optionsOrName, _this._toGtagOptions(params));
+      } else {
+        var action = optionsOrName.action,
+          category = optionsOrName.category,
+          label = optionsOrName.label,
+          value = optionsOrName.value,
+          nonInteraction = optionsOrName.nonInteraction,
+          transport = optionsOrName.transport;
+        if (!category || !action) {
+          console.warn("args.category AND args.action are required in event()");
+          return;
+        }
+
+        // Required Fields
+        var fieldObject = {
+          hitType: "event",
+          eventCategory: (0, _format["default"])(category),
+          eventAction: (0, _format["default"])(action)
+        };
+
+        // Optional Fields
+        if (label) {
+          fieldObject.eventLabel = (0, _format["default"])(label);
+        }
+        if (typeof value !== "undefined") {
+          if (typeof value !== "number") {
+            console.warn("Expected `args.value` arg to be a Number.");
+          } else {
+            fieldObject.eventValue = value;
+          }
+        }
+        if (typeof nonInteraction !== "undefined") {
+          if (typeof nonInteraction !== "boolean") {
+            console.warn("`args.nonInteraction` must be a boolean.");
+          } else {
+            fieldObject.nonInteraction = nonInteraction;
+          }
+        }
+        if (typeof transport !== "undefined") {
+          if (typeof transport !== "string") {
+            console.warn("`args.transport` must be a string.");
+          } else {
+            if (["beacon", "xhr", "image"].indexOf(transport) === -1) {
+              console.warn("`args.transport` must be either one of these values: `beacon`, `xhr` or `image`");
+            }
+            fieldObject.transport = transport;
+          }
+        }
+        _this._gaCommand("send", fieldObject);
+      }
+    });
+    _defineProperty(this, "send", function (fieldObject) {
+      _this._gaCommand("send", fieldObject);
+    });
+    this.reset();
+  }
+  _createClass(GA4, [{
+    key: "gtag",
+    value: function gtag() {
+      this._gtag.apply(this, arguments);
+    }
+  }]);
+  return GA4;
+}();
+exports.GA4 = GA4;
+var _default = new GA4();
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "voWo":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = void 0;
+var gtag = function gtag() {
+  for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+    args[_key] = arguments[_key];
+  }
+  if (typeof window !== "undefined") {
+    var _window;
+    if (typeof window.gtag === "undefined") {
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function gtag() {
+        window.dataLayer.push(arguments);
+      };
+    }
+    (_window = window).gtag.apply(_window, args);
+  }
+};
+var _default = gtag;
+exports["default"] = _default;
 
 /***/ }),
 

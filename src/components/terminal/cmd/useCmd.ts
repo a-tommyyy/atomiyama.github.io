@@ -60,7 +60,6 @@ export const useCmd = (): UseCmd => {
   }, [results, historyIndex])
 
   const handleExecCmd = (input: string) => {
-    console.log(input)
     const command = input.split(' ')[0];
     const args = input.split(' ').slice(1);
     if (command === 'clear') {
