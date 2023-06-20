@@ -12,24 +12,24 @@ export const Header = ({ ariaHidden }: { ariaHidden?: boolean }) => (
 		<nav>
 			<ul>
 				<li>
-					<Link
+					<a
 						class="fa-solid fa-file"
 						href="/assets/akifumi_akazawa_resume_en.pdf"
 						target="_blank"
 						rel="noopener noreferrer"
 					>
 						<span class={style.label}>Resume(en)</span>
-					</Link>
+					</a>
 				</li>
 				<li>
-					<Link
+					<a
 						class="fa-solid fa-file"
 						href="/assets/akifumi_akazawa_resume_ja.pdf"
 						target="_blank"
 						rel="noopener noreferrer"
 					>
 						<span class={style.label}>Resume(ja)</span>
-					</Link>
+					</a>
 				</li>
 				<li>
 					<a class="fa-brands fa-github" href="https://github.com/atomiyama">

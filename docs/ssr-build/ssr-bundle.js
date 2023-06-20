@@ -706,7 +706,6 @@ preact_router_es_Router.exec = exec;
 // CONCATENATED MODULE: ./components/header/index.tsx
 
 
-
 var header_Header = function Header(_ref) {
   var ariaHidden = _ref.ariaHidden;
   return Object(external_preact_["h"])("header", {
@@ -716,14 +715,14 @@ var header_Header = function Header(_ref) {
     class: style.title
   }, "Akifumi Akazawa(Tomiyama)"), Object(external_preact_["h"])("p", {
     class: style.subtitle
-  }, "Software Engineer skilled in Web Application and Data Engineering."), Object(external_preact_["h"])("nav", null, Object(external_preact_["h"])("ul", null, Object(external_preact_["h"])("li", null, Object(external_preact_["h"])(preact_router_es_Link, {
+  }, "Software Engineer skilled in Web Application and Data Engineering."), Object(external_preact_["h"])("nav", null, Object(external_preact_["h"])("ul", null, Object(external_preact_["h"])("li", null, Object(external_preact_["h"])("a", {
     class: "fa-solid fa-file",
     href: "/assets/akifumi_akazawa_resume_en.pdf",
     target: "_blank",
     rel: "noopener noreferrer"
   }, Object(external_preact_["h"])("span", {
     class: style.label
-  }, "Resume(en)"))), Object(external_preact_["h"])("li", null, Object(external_preact_["h"])(preact_router_es_Link, {
+  }, "Resume(en)"))), Object(external_preact_["h"])("li", null, Object(external_preact_["h"])("a", {
     class: "fa-solid fa-file",
     href: "/assets/akifumi_akazawa_resume_ja.pdf",
     target: "_blank",
