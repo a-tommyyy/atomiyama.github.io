@@ -21,10 +21,11 @@ export const CommandExperience = () => {
           <li>Technical management for a team of 3 people.</li>
         </ul>
       </div>
+
       <div className={style.experience}>
         <p className={style.title}>
-          <strong>2) Software Engineer Backend Techlead</strong>, Mercari, Inc.
-          Tokyo, Japan (2023/10 ~ 2024/09)
+          <strong>2) Software Engineer Backend</strong>, Mercari, Inc. Tokyo,
+          Japan (2023/10 ~ 2024/09)
         </p>
         <p className={style.description}>
           As a Software Engineer Backend, I was responsible for the system
@@ -39,6 +40,7 @@ export const CommandExperience = () => {
           <li>Developing GraphQL API and gRPC.</li>
         </ul>
       </div>
+
       <div className={style.experience}>
         <p className={style.title}>
           <strong>3) Customer Reliability Engineer</strong>, Studyplus, Inc.
@@ -59,6 +61,7 @@ export const CommandExperience = () => {
           </li>
         </ul>
       </div>
+
       <div className={style.section}>
         <p className={style.title}>
           <strong>4) Team Leader</strong>, Studyplus, Inc. Tokyo, Japan (2020/01
@@ -77,6 +80,7 @@ export const CommandExperience = () => {
           <li>Introduced scrum development and reduced project delays</li>
         </ul>
       </div>
+
       <div className={style.section}>
         <p className={style.title}>
           <strong>5) Back-End Engineer</strong>, Studyplus, Inc. Tokyo, Japan
@@ -97,6 +101,7 @@ export const CommandExperience = () => {
           </li>
         </ul>
       </div>
+
       <div className={style.section}>
         <p className={style.title}>
           <strong>6) System Engineer</strong>, Technobrain,Inc. Tokyo, Japan
