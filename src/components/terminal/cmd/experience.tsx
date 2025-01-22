@@ -22,7 +22,7 @@ export const CommandExperience = () => {
         </ul>
       </div>
 
-      <div className={style.experience}>
+      <div className={style.section}>
         <p className={style.title}>
           <strong>2) Software Engineer Backend</strong>, Mercari, Inc. Tokyo,
           Japan (2023/10 ~ 2024/09)
@@ -41,7 +41,7 @@ export const CommandExperience = () => {
         </ul>
       </div>
 
-      <div className={style.experience}>
+      <div className={style.section}>
         <p className={style.title}>
           <strong>3) Customer Reliability Engineer</strong>, Studyplus, Inc.
           Tokyo, Japan (2022/05 ~ Now)
