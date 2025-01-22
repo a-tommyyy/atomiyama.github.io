@@ -1076,11 +1076,11 @@ var useCmd_useCmd = function useCmd() {
   p(function () {
     return inputRef.current.focus();
   }, []);
-  var inputValueMemo = hooks_module_('');
+  var inputValueMemo = hooks_module_("");
   p(function () {
     var handleKeyDown = function handleKeyDown(e) {
       // formにフォーカスがない状態でEnterが押されたらformのinputにフォーカスする
-      if (e.key === 'Enter' && document.activeElement !== inputRef.current) {
+      if (e.key === "Enter" && document.activeElement !== inputRef.current) {
         var _inputRef$current;
         e.preventDefault();
         (_inputRef$current = inputRef.current) === null || _inputRef$current === void 0 ? void 0 : _inputRef$current.focus();
@@ -1089,10 +1089,10 @@ var useCmd_useCmd = function useCmd() {
       // historyIndexが最大値のときその時点でのinputの値をinputValueMemoに保存する
       if (historyIndex === results.length) {
         var _inputRef$current2;
-        inputValueMemo.current = ((_inputRef$current2 = inputRef.current) === null || _inputRef$current2 === void 0 ? void 0 : _inputRef$current2.value) || '';
+        inputValueMemo.current = ((_inputRef$current2 = inputRef.current) === null || _inputRef$current2 === void 0 ? void 0 : _inputRef$current2.value) || "";
       }
       // 上下矢印キーで履歴を遡れるようにする
-      if (e.key === 'ArrowUp') {
+      if (e.key === "ArrowUp") {
         e.preventDefault();
         var prev = results[historyIndex - 1];
         if (prev && inputRef.current) {
@@ -1104,7 +1104,7 @@ var useCmd_useCmd = function useCmd() {
       }
       // 下矢印キーで履歴を進められるようにする
       // ただし、最新の履歴まで進んだ場合は、もとの入力を復元する
-      if (e.key === 'ArrowDown') {
+      if (e.key === "ArrowDown") {
         e.preventDefault();
         var next = results[historyIndex + 1];
         if (next && inputRef.current) {
@@ -1118,15 +1118,15 @@ var useCmd_useCmd = function useCmd() {
         }
       }
     };
-    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener("keydown", handleKeyDown);
     return function () {
-      return document.removeEventListener('keydown', handleKeyDown);
+      return document.removeEventListener("keydown", handleKeyDown);
     };
   }, [results, historyIndex]);
   var handleExecCmd = function handleExecCmd(input) {
-    var command = input.split(' ')[0];
-    var args = input.split(' ').slice(1);
-    if (command === 'clear') {
+    var command = input.split(" ")[0];
+    var args = input.split(" ").slice(1);
+    if (command === "clear") {
       return setResults(function (results) {
         return results.map(function (result) {
           return _objectSpread(_objectSpread({}, result), {}, {
@@ -1187,32 +1187,44 @@ var error_CommandNotFound = function CommandNotFound(_ref) {
 
 var experience_CommandExperience = function CommandExperience() {
   return Object(external_preact_["h"])("div", {
-    class: cmd_style.output
+    className: cmd_style.output
   }, Object(external_preact_["h"])("strong", null, "Professional Experience :"), Object(external_preact_["h"])("div", {
-    class: cmd_style.section
+    className: cmd_style.section
   }, Object(external_preact_["h"])("p", {
-    class: cmd_style.title
-  }, Object(external_preact_["h"])("strong", null, "1) Customer Reliability Engineer"), ", Studyplus,Inc. Tokyo,Japan (2022/05 ~ Now)"), Object(external_preact_["h"])("p", {
-    class: cmd_style.description
-  }, "A first member of the team. Decrease Customer's anxiety and increase Customer's satisfaction by improving the reliability of the service."), Object(external_preact_["h"])("ul", null, Object(external_preact_["h"])("li", null, "Building Data Pipeline and Data Warehouse(~500 tables, 1billion records)"), Object(external_preact_["h"])("li", null, "Implement system to detect messages between users that violate the terms of service.(1M messages/month)"))), Object(external_preact_["h"])("div", {
-    class: cmd_style.section
+    className: cmd_style.title
+  }, Object(external_preact_["h"])("strong", null, "1) Software Engineer Backend Techlead"), ", Mercari, Inc. Tokyo, Japan (2024/10 ~ Now)"), Object(external_preact_["h"])("p", {
+    className: cmd_style.description
+  }, "As a Software Engineer Backend Tech Lead, I was responsible for the system design, feature development, and operation of services in the HR domain, as well as the technical management of a team of three people."), Object(external_preact_["h"])("ul", null, Object(external_preact_["h"])("li", null, "Developing GraphQL API and gRPC."), Object(external_preact_["h"])("li", null, "Technical management for a team of 3 people."))), Object(external_preact_["h"])("div", {
+    className: cmd_style.section
   }, Object(external_preact_["h"])("p", {
-    class: cmd_style.title
-  }, Object(external_preact_["h"])("strong", null, "2) Team Leader"), ", Studyplus,Inc. Tokyo,Japan (2020/01 ~ Now)"), Object(external_preact_["h"])("p", {
-    class: cmd_style.description
-  }, "As a team leader of 9 people web application group, I have lead the team to deliver features in educational field. Examples of actions I have taken are as follows."), Object(external_preact_["h"])("ul", null, Object(external_preact_["h"])("li", null, "Create a career ladder to clarify the career goals and current status of the members"), Object(external_preact_["h"])("li", null, "Introduced scrum development and reduced project delays"))), Object(external_preact_["h"])("div", {
-    class: cmd_style.section
+    className: cmd_style.title
+  }, Object(external_preact_["h"])("strong", null, "2) Software Engineer Backend"), ", Mercari, Inc. Tokyo, Japan (2023/10 ~ 2024/09)"), Object(external_preact_["h"])("p", {
+    className: cmd_style.description
+  }, "As a Software Engineer Backend, I was responsible for the system design, feature development, and operation of services in the HR domain."), Object(external_preact_["h"])("ul", null, Object(external_preact_["h"])("li", null, "Building a distributed record lock service across multiple services within modular monolith application."), Object(external_preact_["h"])("li", null, "Developing GraphQL API and gRPC."))), Object(external_preact_["h"])("div", {
+    className: cmd_style.section
   }, Object(external_preact_["h"])("p", {
-    class: cmd_style.title
-  }, Object(external_preact_["h"])("strong", null, "3) Back-End Engineer"), ", Studyplus,Inc. Tokyo,Japan (2018/09 ~ 2020/12)"), Object(external_preact_["h"])("p", {
-    class: cmd_style.description
+    className: cmd_style.title
+  }, Object(external_preact_["h"])("strong", null, "3) Customer Reliability Engineer"), ", Studyplus, Inc. Tokyo, Japan (2022/05 ~ Now)"), Object(external_preact_["h"])("p", {
+    className: cmd_style.description
+  }, "A first member of the team. Decrease Customer's anxiety and increase Customer's satisfaction by improving the reliability of the service."), Object(external_preact_["h"])("ul", null, Object(external_preact_["h"])("li", null, "Building Data Pipeline and Data Warehouse(~500 tables, 1billion records)"), Object(external_preact_["h"])("li", null, "Implement a system to detect messages between users that violate the terms of service.(1M messages/month)"))), Object(external_preact_["h"])("div", {
+    className: cmd_style.section
+  }, Object(external_preact_["h"])("p", {
+    className: cmd_style.title
+  }, Object(external_preact_["h"])("strong", null, "4) Team Leader"), ", Studyplus, Inc. Tokyo, Japan (2020/01 ~ Now)"), Object(external_preact_["h"])("p", {
+    className: cmd_style.description
+  }, "As a team leader of 9 people web application group, I have led the team to deliver features in the educational field. Examples of actions I have taken are as follows."), Object(external_preact_["h"])("ul", null, Object(external_preact_["h"])("li", null, "Create a career ladder to clarify the career goals and current status of the members"), Object(external_preact_["h"])("li", null, "Introduced scrum development and reduced project delays"))), Object(external_preact_["h"])("div", {
+    className: cmd_style.section
+  }, Object(external_preact_["h"])("p", {
+    className: cmd_style.title
+  }, Object(external_preact_["h"])("strong", null, "5) Back-End Engineer"), ", Studyplus, Inc. Tokyo, Japan (2018/09 ~ 2020/12)"), Object(external_preact_["h"])("p", {
+    className: cmd_style.description
   }, "As part of B2B SaaS Web Application Team, I have delivered features to improve the learning efficiency of students and teachers."), Object(external_preact_["h"])("ul", null, Object(external_preact_["h"])("li", null, "Migrate monolith Ruby on Rails App into REST API and React SPA"), Object(external_preact_["h"])("li", null, "Introduce Schema Driven Development process"), Object(external_preact_["h"])("li", null, "Implement front-end and back-end across ambiguous systems and environment"))), Object(external_preact_["h"])("div", {
-    class: cmd_style.section
+    className: cmd_style.section
   }, Object(external_preact_["h"])("p", {
-    class: cmd_style.title
-  }, Object(external_preact_["h"])("strong", null, "4) System Engineer"), ", Technobrain ,Inc. Tokyo,Japan (2017/09 ~ 2018/08)"), Object(external_preact_["h"])("p", {
-    class: cmd_style.description
-  }, "As a system engineer of contract software development team, I have developed a internal use buisiness operation web application.")));
+    className: cmd_style.title
+  }, Object(external_preact_["h"])("strong", null, "6) System Engineer"), ", Technobrain,Inc. Tokyo, Japan (2017/09 ~ 2018/08)"), Object(external_preact_["h"])("p", {
+    className: cmd_style.description
+  }, "As a system engineer of a contract software development team, I have developed web applications for internal business operations.")));
 };
 // CONCATENATED MODULE: ./components/terminal/cmd/skills.tsx
 
