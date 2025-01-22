@@ -34,8 +34,8 @@ export const CommandExperience = () => {
         </p>
         <ul>
           <li>
-            Building a distributed transactional lock service for modular
-            monolith application.
+            Building a distributed record lock service across multiple services
+            within modular monolith application.
           </li>
           <li>Developing GraphQL API and gRPC.</li>
         </ul>
