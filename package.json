@@ -29,7 +29,7 @@
     "react-ga4": "^2.1.0"
   },
   "devDependencies": {
-    "@types/enzyme": "^3.10.12",
+    "@types/enzyme": "^3.10.18",
     "@types/jest": "^27.4.1",
     "@typescript-eslint/eslint-plugin": "^5.30.6",
     "@typescript-eslint/parser": "^5.30.6",
